@@ -65,9 +65,21 @@ function handler(event) {
         deltaX = -1*delta;
     }
     
-    // Webkit
-    if ( orgEvent.wheelDeltaY !== undefined ) { deltaY = orgEvent.wheelDeltaY/120; }
-    if ( orgEvent.wheelDeltaX !== undefined ) { deltaX = -1*orgEvent.wheelDeltaX/120; }
+
+    // Webkit    
+    var userAgent = navigator.userAgent.toLowerCase();
+    
+    var wheelDeltaScaleFactor = 1;
+    if (jQuery.browser.msie || (jQuery.browser.webkit && !(/chrome/.test(userAgent)))) {
+      wheelDeltaScaleFactor = 40;
+    }
+
+    if (orgEvent.wheelDeltaY !== undefined) { 
+        deltaY = orgEvent.wheelDeltaY / 120 / wheelDeltaScaleFactor;
+    }
+    if (orgEvent.wheelDeltaX !== undefined) {
+        deltaX = -1*orgEvent.wheelDeltaX / 120 / wheelDeltaScaleFactor;
+    }
     
     // Add event and delta to the front of the arguments
     args.unshift(event, delta, deltaX, deltaY);
