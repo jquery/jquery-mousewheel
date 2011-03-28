@@ -16,6 +16,24 @@ Here is an example of using both the bind and helper method syntax.
         console.log(delta, deltaX, deltaY);
     });
 
+## To use in node.js with [browserify]()
+    
+    npm install jquery-mousewheel
+    npm install jquery-browserify
+
+In your server-side node.js code:
+
+    var express = require('express');
+    var app = express.createServer();
+    
+    app.use(require('browserify')({
+        require : [ 'jquery-browserify', 'jquery-mousewheel' ]
+    }));
+
+In your browser-side javascript:
+    
+    var $ = require('jquery-browserify');
+    require('jquery-mousewheel')($);
 
 ## License
 
