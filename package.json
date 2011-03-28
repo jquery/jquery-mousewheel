@@ -1,0 +1,20 @@
+{
+    "name" : "jquery-mousewheel",
+    "version" : "3.0.4",
+    "description" : "A jQuery plugin that adds cross-browser mouse wheel support.",
+    "main" : "./jquery.mousewheel.js",
+    "repository" : {
+        "type" : "git",
+        "url" : "https://github.com/brandonaaron/jquery-mousewheel.git"
+    },
+    "browserify" : {
+        "main" : "./browserify.js"
+    },
+    "keywords" : [ "jquery", "mousewheel", "plugin", "browser" ],
+    "author" : {
+        "name" : "Brandon Aaron",
+        "email" : "brandon.aaron@gmail.com",
+        "url" : "http://brandonaaron.net/"
+    },
+    "license" : "MIT"
+}
