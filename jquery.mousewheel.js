@@ -11,9 +11,9 @@
  */
 
 (function($) {
-
+var timeout = 0;
+var paused = false;
 var types = ['DOMMouseScroll', 'mousewheel'];
-
 if ($.event.fixHooks) {
     for ( var i=types.length; i; ) {
         $.event.fixHooks[ types[--i] ] = $.event.mouseHooks;
@@ -43,7 +43,8 @@ $.event.special.mousewheel = {
 };
 
 $.fn.extend({
-    mousewheel: function(fn) {
+    mousewheel: function(fn,t) {
+        timeout = t;
         return fn ? this.bind("mousewheel", fn) : this.trigger("mousewheel");
     },
     
@@ -54,6 +55,15 @@ $.fn.extend({
 
 
 function handler(event) {
+    if(paused) return;
+
+    if(timeout > 0){
+        paused = true;
+        setTimeout(function(){
+            paused = false;
+        },timeout);
+    }
+
     var orgEvent = event || window.event, args = [].slice.call( arguments, 1 ), delta = 0, returnValue = true, deltaX = 0, deltaY = 0;
     event = $.event.fix(orgEvent);
     event.type = "mousewheel";
