@@ -43,8 +43,12 @@ $.event.special.mousewheel = {
 };
 
 $.fn.extend({
-    mousewheel: function(fn) {
-        return fn ? this.bind("mousewheel", fn) : this.trigger("mousewheel");
+    mousewheel: function(data, fn) {
+        if (fn == null) {
+          fn = data;
+          data = null;
+        }
+        return fn ? this.bind("mousewheel", data, fn) : this.trigger("mousewheel");
     },
     
     unmousewheel: function(fn) {
