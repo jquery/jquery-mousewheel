@@ -73,6 +73,14 @@
 				float: left;
 			}
 			
+			#test8 {
+				background-color: #000;
+				width: 120px;
+				height: 100px;
+				color: #fff;
+				float: left;
+			}
+			
 			#forceScroll {
 				clear: both;
 				height: 1000px;
@@ -285,6 +293,33 @@
 						
 						event.preventDefault();
 					});
+								
+				$('#test8').append('<div style="position:absolute;width:500px;height:100%;left:0px;top:0px;">Test8</div>');
+				$('#test8')
+					.mousewheel(function(event, delta, deltaX, deltaY) {
+                        $(this).html('<div style="position:absolute;width:500px;height:100%;left:0px;top:0px;">Test8</div>');						
+						
+						var o = '';
+						if (delta > 0)
+							o = '#test8: up ('+delta+')';
+						else if (delta < 0)
+							o = '#test8: down ('+delta+')';
+						
+						if (deltaX > 0)
+							o = o + ', east ('+deltaX+')';
+						else if (deltaX < 0)
+							o = o + ', west ('+deltaX+')';
+						
+						if (deltaY > 0)
+							o = o + ', north ('+deltaY+')';
+						else if (deltaY < 0)
+							o = o + ', south ('+deltaY+')';
+						
+						if( o != '' )
+							log( o );
+						
+						return false;
+					});	
 				
 				function log(msg) {
 					$('#logger').append('<p>'+msg+'</p>').scrollTop(999999);
@@ -304,6 +339,7 @@
 			<li><strong>Test5</strong> is like Test2 but has children. The children should not scroll until mousing over them.</li>
 			<li><strong>Test6</strong> is like Test5 but should not scroll children or parents.</li>
 			<li><strong>Test7</strong> is like Test6 but has no children. It will propagate the event and scroll test 6 as well.</li>
+			<li><strong>Test8</strong> page should not scroll while wheel dynamic content using Firefox </li>
 		</ul>
 		
 		
@@ -318,6 +354,8 @@
 				<div id="test7"><p>Test7</p></div>
 			</div>
 		</div>
+		<div id="test8" style="overflow:hidden; position: relative;">Test8</div>
+		
 		
 		<div id="logger"></div>
 		
