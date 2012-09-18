@@ -10,7 +10,7 @@
  * Requires: 1.2.2+
  */
 
-(function($) {
+var jQueryMouseWheel = function($) {
 
 var types = ['DOMMouseScroll', 'mousewheel'];
 
@@ -81,4 +81,10 @@ function handler(event) {
     return ($.event.dispatch || $.event.handle).apply(this, args);
 }
 
-})(jQuery);
+};
+
+if (window.define !== undefined){
+    define(["jquery"], jQueryMouseWheel);
+} else {
+    jQueryMouseWheel(jQuery);
+}
