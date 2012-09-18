@@ -1,0 +1,33 @@
+{  
+  "name": "jquery-mousewheel",
+  "version": "3.0.6",
+  "description": "A jQuery plugin that adds cross-browser mouse wheel support",
+  "author" : "Brandon Aaron <http://brandonaaron.net/>",
+  "maintainers" : {
+      "name": "Brandon Aaron",
+      "web": "http://brandonaaron.net"       
+  },  
+  "contributors" : {
+      "name": "Frederic Langlade-Bellone",
+      "email": "fred@parapluie.org",
+      "web": "http://www.parapluie.org" 
+  },
+  "jam": {
+    "dependencies": {
+      "jquery": "1.x.x"
+    }
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php",
+    }
+  ],
+  "repositories": [
+    {
+      "type": "git", 
+      "url": "http://github.com/brandonaaron/jquery-mousewheel.git"
+    }
+  ],
+  "github": "https://github.com/brandonaaron/jquery-mousewheel"
+}
