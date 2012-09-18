@@ -1,6 +1,6 @@
 {  
   "name": "jquery-mousewheel",
-  "version": "3.0.6",
+  "version": "3.0.6jam",
   "description": "A jQuery plugin that adds cross-browser mouse wheel support",
   "author" : "Brandon Aaron <http://brandonaaron.net/>",
   "jam": {
