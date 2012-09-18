@@ -29,5 +29,6 @@
       "url": "http://github.com/brandonaaron/jquery-mousewheel.git"
     }
   ],
-  "github": "https://github.com/brandonaaron/jquery-mousewheel"
+  "github": "https://github.com/brandonaaron/jquery-mousewheel",
+  "categories": ["UI", "Events"]
 }
