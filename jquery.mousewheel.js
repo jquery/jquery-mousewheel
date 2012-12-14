@@ -12,7 +12,7 @@
 
 (function($) {
 
-var types = ['DOMMouseScroll', 'mousewheel'];
+var types = ['DOMMouseScroll', 'mousewheel', 'wheel'];
 
 if ($.event.fixHooks) {
     for ( var i=types.length; i; ) {
