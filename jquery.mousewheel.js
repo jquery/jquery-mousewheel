@@ -1,11 +1,14 @@
 /*! Copyright (c) 2011 Brandon Aaron (http://brandonaaron.net)
+ *
+ * Wheel event handling added Jan 2013 by Lydia Katsamberis (http://www.llkats.com)
+ *
  * Licensed under the MIT License (LICENSE.txt).
  *
  * Thanks to: http://adomas.org/javascript-mouse-wheel/ for some pointers.
  * Thanks to: Mathias Bank(http://www.mathias-bank.de) for a scope bug fix.
  * Thanks to: Seamus Leahy for adding deltaX and deltaY
  *
- * Version: 3.0.6
+ * Version: 3.0.7
  *
  * Requires: 1.2.2+
  */
