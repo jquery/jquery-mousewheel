@@ -56,8 +56,8 @@
     };
 
     $.fn.extend({
-        mousewheel: function(fn) {
-            return fn ? this.bind("mousewheel", fn) : this.trigger("mousewheel");
+        mousewheel: function(fn,data) {
+            return fn ? this.bind("mousewheel",data, fn) : this.trigger("mousewheel",data);
         },
 
         unmousewheel: function(fn) {
