@@ -108,6 +108,14 @@
         deltaX = Math[fn](deltaX / lowestDeltaXY);
         deltaY = Math[fn](deltaY / lowestDeltaXY);
 
+        // <=ie9 (fix for ie8)
+        try { 
+          event.originalEvent.hasOwnProperty('wheelDelta') 
+        }
+        catch(e) {
+          deltaY = deltaX = delta;
+        }
+
         // Add event and delta to the front of the arguments
         args.unshift(event, delta, deltaX, deltaY);
 
