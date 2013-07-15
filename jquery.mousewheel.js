@@ -113,7 +113,7 @@
           event.originalEvent.hasOwnProperty('wheelDelta') 
         }
         catch(e) {
-          deltaY = deltaX = delta;
+          deltaY = delta;
         }
 
         // Add event and delta to the front of the arguments
