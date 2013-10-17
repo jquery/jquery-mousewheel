@@ -82,6 +82,18 @@
         if ( orgEvent.wheelDelta ) { delta = orgEvent.wheelDelta; }
         if ( orgEvent.detail )     { delta = orgEvent.detail * -1; }
 
+        if ( orgEvent.axis ) {
+            if ( orgEvent.axis === HORIZONTAL_AXIS ) {
+                deltaX = delta;
+                deltaY = 0;
+            }
+
+            if ( orgEvent.axis === VERTICAL_AXIS ) {
+                deltaX = 0;
+                deltaY = delta;
+            }
+        }
+
         // New school wheel delta (wheel event)
         if ( orgEvent.deltaY ) {
             deltaY = orgEvent.deltaY * -1;
