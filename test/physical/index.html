@@ -180,7 +180,7 @@
                     });
 
                 $('#test6')
-                    .on('mousewheel', function(event) {
+                    .on('mousewheel', { mousewheel: { behavior: 'throttle', delay: 100 } }, function(event) {
                         loghandle(event);
                         event.stopPropagation();
                         event.preventDefault();
