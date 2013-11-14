@@ -37,7 +37,7 @@
   },
   "jam": {
     "dependencies": {
-      "jquery": ">=1.2.2"
+      "jquery": ">=1.7"
     }
   }
 }
