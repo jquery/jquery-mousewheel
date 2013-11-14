@@ -1,5 +1,7 @@
 # jQuery Mouse Wheel Plugin
 
+[![devDependency Status](https://david-dm.org/brandonaaron/jquery-mousewheel/dev-status.png)](https://david-dm.org/brandonaaron/jquery-mousewheel#info=devDependencies)
+
 A [jQuery](http://jquery.com/) plugin that adds cross-browser mouse wheel support with delta normalization.
 
 In order to use the plugin, simply bind the `mousewheel` event to an element.
