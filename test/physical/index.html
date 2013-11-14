@@ -4,23 +4,6 @@
         <meta charset="iso-8859-1">
         <title>Testing mousewheel plugin</title>
 
-<<<<<<< HEAD:test/index.html
-=======
-        <script>
-            (function(){
-                    var verMatch = /v=([\w\.]+)/.exec( location.search ),
-                    version = verMatch && verMatch[1], src;
-                    if ( version ) {
-                            src = 'code.jquery.com/jquery-' + version;
-                    } else {
-                            src = 'code.jquery.com/jquery-git';
-                    }
-                    document.write( '<script src="http://' + src + '.js"><\/script>' );
-            })();
-        </script>
-        <script src="../../jquery.mousewheel.js"></script>
-
->>>>>>> Add examples directory and beginings of the unit tests:test/physical/index.html
         <style>
             html {
                 font: 13px Arial, sans-serif;
@@ -134,11 +117,6 @@
 
                     o = '#' + id + ':';
 
-                    if (delta > 0)
-                        o += ' up (' + delta + ')';
-                    else if (delta < 0)
-                        o += ' down (' + delta + ')';
-
                     if (event.deltaY > 0)
                         o += ' north (' + event.deltaY + ')';
                     else if (event.deltaY < 0)
@@ -160,57 +138,57 @@
                     });
 
                 $('#test1')
-                    .mousewheel(function(event, delta) {
-                        loghandle(event, delta);
+                    .on('mousewheel', function(event) {
+                        loghandle(event);
                         log('pageX: ' + event.pageX + ' pageY: ' + event.pageY );
                     });
 
                 $('#test2')
-                    .mousewheel(function(event, delta) {
-                        loghandle(event, delta);
+                    .on('mousewheel', function(event) {
+                        loghandle(event);
                         return false; // prevent default
                     });
 
                 $('#test3')
                     .hover(function() { log('#test3: mouseover'); }, function() { log('#test3: mouseout'); })
-                    .mousewheel(function() {
+                    .on('mousewheel', function(event, delta, deltaX, deltaY) {
                         log('#test3: I should not have been logged');
                     })
-                    .unmousewheel();
+                    .off('mousewheel');
 
                 var testRemoval = function() {
                     log('#test4: I should not have been logged');
                 };
 
                 $('#test4')
-                    .mousewheel(function(event, delta) {
-                        loghandle(event, delta);
+                    .on('mousewheel', function(event) {
+                        loghandle(event);
                         return false;
                     })
-                    .mousewheel(testRemoval)
-                    .mousewheel(function(event, delta) {
-                        loghandle(event, delta);
+                    .on('mousewheel', testRemoval)
+                    .on('mousewheel', function(event) {
+                        loghandle(event);
                         return false;
                     })
-                    .unmousewheel(testRemoval);
+                    .off('mousewheel', testRemoval);
 
                 $('#test5')
-                    .mousewheel(function(event, delta) {
-                        loghandle(event, delta);
+                    .on('mousewheel', function(event) {
+                        loghandle(event);
                         event.stopPropagation();
                         event.preventDefault();
                     });
 
                 $('#test6')
-                    .mousewheel(function(event, delta) {
-                        loghandle(event, delta);
+                    .on('mousewheel', function(event) {
+                        loghandle(event);
                         event.stopPropagation();
                         event.preventDefault();
                     });
 
                 $('#test7')
-                    .mousewheel(function(event, delta) {
-                        loghandle(event, delta);
+                    .on('mousewheel', function(event) {
+                        loghandle(event);
                         event.preventDefault();
                     });
 
