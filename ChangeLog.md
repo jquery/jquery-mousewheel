@@ -1,5 +1,14 @@
 # Mouse Wheel ChangeLog
 
+## 3.2.0-pre
+
+* Now requires jQuery 1.7+
+* Add trigger hook so that triggering a mousewheel event works properly via $().trigger
+* Removed delta, deltaX, and deltaY from the event handler args
+* Remove mousewheel/unmousehweel helper functions in preference of just using $().on and $().trigger
+* Add examples directory
+* Add proper unit tests in addition to tried and true physical test
+
 ## 3.1.12
 
 * Fix possible 0 value for line height when in delta mode 1
