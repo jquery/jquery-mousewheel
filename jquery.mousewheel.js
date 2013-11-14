@@ -44,6 +44,15 @@
             }
         },
 
+        add: function(handleObj) {
+            if ( 'mousewheel' in (handleObj.data || {}) &&
+                 'behavior' in (handleObj.data.mousewheel) &&
+                 'delay' in (handleObj.data.mousewheel)
+               ) {
+                $.event.special.mousewheel._delayHandler(handleObj);
+            }
+        },
+
         teardown: function() {
             if ( this.removeEventListener ) {
                 for ( var i = toBind.length; i; ) {
@@ -55,14 +64,35 @@
         },
 
         trigger: function(data, event) {
-          if (!event) {
-            event = data;
-            data = null
-          }
+            if (!event) {
+                event = data;
+                data = null
+            }
 
-          handler.call(this, event);
+            handler.call(this, event);
 
-          return false;
+            return false;
+        },
+
+        _delayHandler: function(handlerObj) {
+            var timeout,
+                scope = this,
+                settings = handlerObj.data.mousewheel,
+                oldHandler = handlerObj.handler,
+                newHandler = function() {
+                    var args = arguments;
+                    var delayed = function() {
+                        oldHandler.apply(scope, args);
+                        timeout = null;
+                    };
+                    if ( settings.behavior === "debounce" && timeout ) {
+                        clearTimeout(timeout);
+                    }
+                    if ( settings.behavior === "throttle" && !timeout || settings.behavior === "debounce" ) {
+                        timeout = setTimeout(delayed, settings.delay);
+                    }
+                };
+            handlerObj.handler = newHandler;
         }
     };
 
