@@ -79,17 +79,6 @@
         }
     };
 
-    $.fn.extend({
-        mousewheel: function(fn) {
-            return fn ? this.bind('mousewheel', fn) : this.trigger('mousewheel');
-        },
-
-        unmousewheel: function(fn) {
-            return this.unbind('mousewheel', fn);
-        }
-    });
-
-
     function handler(event) {
         var orgEvent   = event || window.event,
             args       = slice.call(arguments, 1),
