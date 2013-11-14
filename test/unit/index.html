@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>jQuery Mousewheel Unit Tests</title>
+  <link rel="stylesheet" href="qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="qunit.js"></script>
+  <script>
+    (function(){
+      var verMatch = /v=([\w\.]+)/.exec( location.search ),
+      version = verMatch && verMatch[1], src;
+      if ( version ) {
+        src = 'code.jquery.com/jquery-' + version;
+      } else {
+        src = 'code.jquery.com/jquery-git';
+      }
+      document.write( '<script src="http://' + src + '.js"><\/script>' );
+    })();
+  </script>
+  <script>
+    document.title = document.title + ' against jQuery' + jQuery.fn.jquery;
+  </script>
+  <script src="../../jquery.mousewheel.js"></script>
+  <script src="tests.js"></script>
+</body>
+</html>

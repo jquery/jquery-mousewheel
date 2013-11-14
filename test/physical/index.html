@@ -16,7 +16,7 @@
                     document.write( '<script src="http://' + src + '.js"><\/script>' );
             })();
         </script>
-        <script src="../jquery.mousewheel.js"></script>
+        <script src="../../jquery.mousewheel.js"></script>
 
         <style>
             #stage {
@@ -199,7 +199,7 @@
                     });
 
                 function log(msg) {
-                    $('#logger').append('<p>'+msg+'<\/p>')[0].scrollTop = 999999;
+                    $('#logger').append('<p>'+msg+'<\/p>').scrollTop(999999);
                 };
             });
         </script>
