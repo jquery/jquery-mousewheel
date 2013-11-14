@@ -70,7 +70,6 @@
         // might be trigged event, so check for the originalEvent first
         var orgEvent   = event ? event.originalEvent || event : window.event,
             args       = slice.call(arguments, 1),
-            delta      = 0,
             deltaX     = 0,
             deltaY     = 0,
             absDelta   = 0;
@@ -89,18 +88,9 @@
             deltaY = 0;
         }
 
-        // Set delta to be deltaY or deltaX if deltaY is 0 for backwards compatabilitiy
-        delta = deltaY === 0 ? deltaX : deltaY;
-
         // New school wheel delta (wheel event)
-        if ( 'deltaY' in orgEvent ) {
-          deltaY = orgEvent.deltaY * -1;
-          delta  = deltaY;
-        }
-        if ( 'deltaX' in orgEvent ) {
-          deltaX = orgEvent.deltaX;
-          if ( deltaY === 0 ) { delta  = deltaX * -1; }
-        }
+        if ( 'deltaY' in orgEvent ) { deltaY = orgEvent.deltaY * -1; }
+        if ( 'deltaX' in orgEvent ) { deltaX = orgEvent.deltaX; }
 
         // No change actually happened, no reason to go any further
         if ( deltaY === 0 && deltaX === 0 ) { return; }
@@ -112,7 +102,6 @@
         }
 
         // Get a whole, normalized value for the deltas
-        delta  = Math[ delta  >= 1 ? 'floor' : 'ceil' ](delta  / lowestDelta);
         deltaX = Math[ deltaX >= 1 ? 'floor' : 'ceil' ](deltaX / lowestDelta);
         deltaY = Math[ deltaY >= 1 ? 'floor' : 'ceil' ](deltaY / lowestDelta);
 
@@ -121,8 +110,8 @@
         event.deltaY = deltaY;
         event.deltaFactor = lowestDelta;
 
-        // Add event and delta to the front of the arguments
-        args.unshift(event, delta, deltaX, deltaY);
+        // Add event to the front of the arguments
+        args.unshift(event);
 
         // Clearout lowestDelta after sometime to better
         // handle multiple device types that give different
