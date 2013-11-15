@@ -105,19 +105,19 @@
                 event    = $.event.fix(orgEvent);
 
             // Old school scrollwheel delta
-            if ( 'detail'      in orgEvent ) { deltaY = orgEvent.detail * -1;      }
-            if ( 'wheelDelta'  in orgEvent ) { deltaY = orgEvent.wheelDelta;       }
-            if ( 'wheelDeltaY' in orgEvent ) { deltaY = orgEvent.wheelDeltaY;      }
+            if ( 'detail'      in orgEvent ) { deltaY = orgEvent.detail; }
+            if ( 'wheelDelta'  in orgEvent ) { deltaY = orgEvent.wheelDelta  * -1; }
+            if ( 'wheelDeltaY' in orgEvent ) { deltaY = orgEvent.wheelDeltaY * -1; }
             if ( 'wheelDeltaX' in orgEvent ) { deltaX = orgEvent.wheelDeltaX * -1; }
 
             // Firefox < 17 horizontal scrolling related to DOMMouseScroll event
             if ( 'axis' in orgEvent && orgEvent.axis === orgEvent.HORIZONTAL_AXIS ) {
-                deltaX = deltaY * -1;
+                deltaX = deltaY;
                 deltaY = 0;
             }
 
             // New school wheel delta (wheel event)
-            if ( 'deltaY' in orgEvent ) { deltaY = orgEvent.deltaY * -1; }
+            if ( 'deltaY' in orgEvent ) { deltaY = orgEvent.deltaY; }
             if ( 'deltaX' in orgEvent ) { deltaX = orgEvent.deltaX; }
 
             // No change actually happened, no reason to go any further
