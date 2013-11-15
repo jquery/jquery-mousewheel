@@ -29,14 +29,37 @@ $('#my_elem').mousewheel(function(event) {
 The old behavior of adding three arguments (`delta`, `deltaX`, and `deltaY`) to the
 event handler is now deprecated and will be removed in later releases.
 
-
 ## The Deltas...
 
-The combination of Browsers, Operating Systems, and Devices offer a huge range of possible delta values. In fact if the user
-uses a trackpad and then a physical mouse wheel the delta values can differ wildly. This plugin normalizes those
-values so you get a whole number starting at +-1 and going up in increments of +-1 according to the force or
-acceleration that is used. This number has the potential to be in the thousands depending on the device.
+The combination of browsers, operating systems, devices, and user settings offer a huge range of possible delta values.
+In fact if the user uses a trackpad and then a physical mouse wheel the delta values can differ wildly. This plugin
+normalizes those values so you get a whole number starting at +-1 and going up in increments of +-1 according to the
+force or acceleration that is used. This number has the potential to be in the thousands depending on the device.
 Check out some of the data collected from users [here](http://mousewheeldatacollector.herokuapp.com/).
+
+### Which direction
+
+One way of understanding the direction is to understand which direction the user it trying to move the content.
+A positive `deltaX` or `deltaY` means the user wants to move the content to west (to the left) or north (upwards) respectively.
+A negative `deltaX` or `deltaY` means the user wants to move the content to east (to the right) or south (downwards) respectively.
+
+```js
+var directions = {
+    isNorth: function(deltaY) { return deltaY > 0; },
+    isEast:  function(deltaX) { return deltaX < 0; },
+    isSouth: function(deltaY) { return deltaY < 0; },
+    isWest:  function(deltaX) { return deltaX > 0; },
+    isNorthEast: function(deltaX, deltaY) { return deltaX < 0 && deltaY > 0; },
+    isNorthWest: function(deltaX, deltaY) { return deltaX > 0 && deltaY > 0; },
+    isSouthEast: function(deltaX, deltaY) { return deltaX < 0 && deltaY < 0; },
+    isSouthWest: function(deltaX, deltaY) { return deltaX > 0 && deltaY < 0; }
+};
+```
+
+#### Older Versions
+
+In older versions of this plugin the delta value signs are the opposite. The deltaY value in this version align with
+the newer wheel event standard which flipped the delta signs from the old wheelDelta properties.
 
 ### Getting the scroll distance
 
@@ -47,6 +70,21 @@ event property to find the scroll distance the browser reported.
 The `deltaFactor` property was added to the event object in 3.1.5 so that the actual reported delta value can be
 extracted. This is a non-standard property.
 
+Here is an example of updating the scroll amount of an element based on the mouse wheel event.
+
+```js
+var $elem = $('#my_elem');
+$elem.on('mousewheel', function(event) {
+    event.preventDefault();
+
+    var top = $elem.scrollTop(),
+        left = $elem.scrollLeft(),
+
+    $elem
+      .scrollTop( event.deltaY * event.deltaFactor )
+      .scrollLeft( event.deltaX * event.deltaFactor );
+});
+```
 
 ## See it in action
 [See the tests on Github](http://brandonaaron.github.io/jquery-mousewheel/test).
