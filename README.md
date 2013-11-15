@@ -40,6 +40,7 @@ Check out some of the data collected from users [here](http://mousewheeldatacoll
 ### Which direction
 
 One way of understanding the direction is to understand which direction the user it trying to move the content.
+This happens to also align with the natural scroll setting in the latest version of OS X.
 A positive `deltaX` or `deltaY` means the user wants to move the content to west (to the left) or north (upwards) respectively.
 A negative `deltaX` or `deltaY` means the user wants to move the content to east (to the right) or south (downwards) respectively.
 

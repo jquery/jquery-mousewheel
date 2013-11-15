@@ -1,12 +1,13 @@
 # Mouse Wheel ChangeLog
 
-## 3.2.0-pre
+## 4.0.0-pre
 
-* Now requires jQuery 1.7+
+* BREAKING: Now requires jQuery 1.7+
+* BREAKING: Match delta signs (+-) to that of the newer wheel event standard.
+* BREAKING: Removed delta, deltaX, and deltaY from the event handler args. Use deltaX and deltaY properties from the event object instead.
+* BREAKING: Remove mousewheel/unmousehweel helper functions in preference of just using $().on and $().trigger
 * Added support for throttling/debouncing via data argument, example: $(...).on('mousewheel', { mousewheel: { behavior: 'throttle', delay: 100 } }, function(event) {...})
 * Added trigger hook so that triggering a mousewheel event works properly, example: $().trigger( $.Event('mousewheel', { deltaX: 0, deltaY: 120 }) );
-* Removed delta, deltaX, and deltaY from the event handler args. Use deltaX and deltaY properties from the event object instead.
-* Remove mousewheel/unmousehweel helper functions in preference of just using $().on and $().trigger
 * Add examples directory
 * Add proper unit tests in addition to tried and true physical test
 
