@@ -123,9 +123,9 @@
                         o += ' south (' + event.deltaY + ')';
 
                     if (event.deltaX > 0)
-                        o += ' east (' + event.deltaX + ')';
-                    else if (event.deltaX < 0)
                         o += ' west (' + event.deltaX + ')';
+                    else if (event.deltaX < 0)
+                        o += ' east (' + event.deltaX + ')';
 
                     o += ' deltaFactor (' + event.deltaFactor + ')';
 
@@ -212,7 +212,7 @@
             <li><strong>Test6</strong> is like Test5 but should not scroll children or parents.</li>
             <li><strong>Test7</strong> is like Test6 but has no children. It will propagate the event and scroll test 6 as well.</li>
         </ul>
-
+        <p>The direction shown in the output is which direction the content would move</p>
 
         <div id="stage">
             <div id="test1"><p>Test1</p></div>
