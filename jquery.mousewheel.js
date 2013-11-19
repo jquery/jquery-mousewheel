@@ -19,10 +19,11 @@
     }
 }(function ($) {
 
-    var toFix  = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'],
-        toBind = ( 'onwheel' in document || document.documentMode >= 9 ) ?
+    var isTouch = 'ontouchstart' in window,
+        toFix   = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'],
+        toBind  = ( 'onwheel' in document || document.documentMode >= 9 ) ?
                     ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'],
-        slice  = Array.prototype.slice,
+        slice   = Array.prototype.slice,
         nullLowestDeltaTimeout, lowestDelta;
 
     if ( $.event.fixHooks ) {
@@ -57,11 +58,17 @@
 
     $.fn.extend({
         mousewheel: function(fn) {
-            return fn ? this.bind('mousewheel', fn) : this.trigger('mousewheel');
+            if (!isTouch)
+                return fn ? this.bind('mousewheel', fn) : this.trigger('mousewheel');
+            else
+                return fn ? this.bind('touchmove', fn) : this.trigger('touchmove');
         },
 
         unmousewheel: function(fn) {
-            return this.unbind('mousewheel', fn);
+            if (!isTouch)
+                return this.unbind('mousewheel', fn);
+            else
+                return this.unbind('touchmove', fn);
         }
     });
 
