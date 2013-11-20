@@ -194,6 +194,8 @@
                 settings = handleObj.data.mousewheel,
                 oldHandler = handleObj.handler,
                 newHandler = function(event) {
+                    if (settings.preventDefault === true) { event.preventDefault(); }
+                    if (settings.stopPropagation === true) { event.stopPropagation(); }
                     if (hasIntent) {
                         oldHandler.apply(elem, arguments);
                     }
@@ -213,6 +215,8 @@
                 settings = handleObj.data.mousewheel,
                 oldHandler = handleObj.handler,
                 newHandler = function(event) {
+                    if (settings.preventDefault === true) { event.preventDefault(); }
+                    if (settings.stopPropagation === true) { event.stopPropagation(); }
                     var args = arguments;
                     var delayed = function() {
                         oldHandler.apply(elem, args);
