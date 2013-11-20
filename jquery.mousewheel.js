@@ -224,28 +224,35 @@
         },
 
         _delayHandler: function(handleObj) {
-            var timeout,
+            var timeout, lastRun,
                 elem       = this,
                 method     = "throttle" in handleObj.data.mousewheel ? "throttle" : "debounce",
                 settings   = handleObj.data.mousewheel[method],
                 delay      = settings.delay || 100,
+                maxDelay   = settings.maxDelay,
                 oldHandler = handleObj.handler,
                 newHandler = function(event) {
-                    if (settings.preventDefault  === true) { event.preventDefault();  }
-                    if (settings.stopPropagation === true) { event.stopPropagation(); }
+                    if ( settings.preventDefault  === true ) { event.preventDefault();  }
+                    if ( settings.stopPropagation === true ) { event.stopPropagation(); }
 
-                    var args = arguments,
+                    var args    = arguments,
+                        elapsed = +new Date() - lastRun,
                         delayed = function() {
+                            lastRun = +new Date();
                             oldHandler.apply(elem, args);
-                            timeout = null;
                         };
 
                     if ( method === "debounce" && timeout ) {
                         clearTimeout(timeout);
                     }
                     if ( method === "throttle" && !timeout || method === "debounce" ) {
-                        timeout = setTimeout(delayed, delay);
+                        timeout = setTimeout(function() {
+                          timeout = null;
+                          delayed();
+                        }, delay);
                     }
+
+                    if ( maxDelay && elapsed >= maxDelay ) { delayed(); }
                 };
             handleObj.handler = newHandler;
         }
