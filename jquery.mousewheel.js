@@ -47,11 +47,11 @@
             var data = handleObj.data,
                 settings = data && data.mousewheel;
             if ( settings ) {
-                if ( "intent" in settings ) {
-                    special._intentHandler.call(this, handleObj);
-                }
                 if ( "throttle" in settings || "debounce" in settings ) {
                     special._delayHandler.call(this, handleObj);
+                }
+                if ( "intent" in settings ) {
+                    special._intentHandler.call(this, handleObj);
                 }
             }
         },
@@ -185,46 +185,66 @@
         },
 
         _intentHandler: function(handleObj) {
-            var timeout,
-                pos = [],
-                hasIntent = false,
-                elem = this,
-                settings = handleObj.data.mousewheel,
-                oldHandler = handleObj.handler,
-                newHandler = function(event) {
-                    if (settings.preventDefault === true) { event.preventDefault(); }
-                    if (settings.stopPropagation === true) { event.stopPropagation(); }
-                    if (hasIntent) {
-                        oldHandler.apply(elem, arguments);
+            var timeout, pX, pY, cX, cY,
+                hasIntent   = false,
+                elem        = this,
+                settings    = handleObj.data.mousewheel.intent,
+                interval    = settings.interval || 100,
+                sensitivity = settings.sensitivity || 7,
+                oldHandler  = handleObj.handler,
+                track       = function(event) {
+                    cX = event.pageX; cY = event.pageY;
+                },
+                compare    = function() {
+                    if ( (Math.abs(pX-cX) + Math.abs(pY-cY)) < sensitivity ) {
+                        $(elem).off('mousemove', track);
+                        hasIntent = true;
+                    } else {
+                        pX = cX; pY = cY;
+                        timeout = setTimeout(compare, interval);
                     }
+                },
+                newHandler = function(event) {
+                    if (settings.preventDefault  === true) { event.preventDefault();  }
+                    if (settings.stopPropagation === true) { event.stopPropagation(); }
+                    if (hasIntent) { oldHandler.apply(elem, arguments); }
                 };
+
             $(elem).on('mouseenter', function(event) {
-                var timeout = setTimeout(function() { hasIntent = true; }, settings.intent);
+                pX = event.pageX; pY = event.pageY;
+                $(elem).on('mousemove', track);
+                timeout = setTimeout(compare, interval);
             }).on('mouseleave', function(event) {
                 if (timeout) { clearTimeout(timeout); }
+                $(elem).off('mousemove', track);
                 hasIntent = false;
             });
+
             handleObj.handler = newHandler;
         },
 
         _delayHandler: function(handleObj) {
             var timeout,
-                elem = this,
-                settings = handleObj.data.mousewheel,
+                elem       = this,
+                method     = "throttle" in handleObj.data.mousewheel ? "throttle" : "debounce",
+                settings   = handleObj.data.mousewheel[method],
+                delay      = settings.delay || 100,
                 oldHandler = handleObj.handler,
                 newHandler = function(event) {
-                    if (settings.preventDefault === true) { event.preventDefault(); }
+                    if (settings.preventDefault  === true) { event.preventDefault();  }
                     if (settings.stopPropagation === true) { event.stopPropagation(); }
-                    var args = arguments;
-                    var delayed = function() {
-                        oldHandler.apply(elem, args);
-                        timeout = null;
-                    };
-                    if ( "debounce" in settings && timeout ) {
+
+                    var args = arguments,
+                        delayed = function() {
+                            oldHandler.apply(elem, args);
+                            timeout = null;
+                        };
+
+                    if ( method === "debounce" && timeout ) {
                         clearTimeout(timeout);
                     }
-                    if ( "throttle" in settings && !timeout || "debounce" in settings ) {
-                        timeout = setTimeout(delayed, (settings.throttle || settings.debounce));
+                    if ( method === "throttle" && !timeout || method === "debounce" ) {
+                        timeout = setTimeout(delayed, delay);
                     }
                 };
             handleObj.handler = newHandler;
