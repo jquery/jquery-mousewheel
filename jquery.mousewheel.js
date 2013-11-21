@@ -205,9 +205,8 @@
                     }
                 },
                 newHandler = function(event) {
-                    if (settings.preventDefault  === true) { event.preventDefault();  }
-                    if (settings.stopPropagation === true) { event.stopPropagation(); }
                     if (hasIntent) { return oldHandler.apply(elem, arguments); }
+                    else { preventAndStopIfSet(settings, event); }
                 };
 
             $(elem).on('mouseenter', function(event) {
@@ -234,9 +233,6 @@
                 maxDelay   = method === "throttle" ? delay : settings.maxDelay,
                 oldHandler = handleObj.handler,
                 newHandler = function(event) {
-                    if ( settings.preventDefault  === true ) { event.preventDefault();  }
-                    if ( settings.stopPropagation === true ) { event.stopPropagation(); }
-
                     var args = arguments,
                         clear = function() {
                             if ( maxTimeout ) { clearTimeout(maxTimeout); }
@@ -311,6 +307,12 @@
         // in older browsers and can cause scrolling to be slower than native.
         // Turn this off by setting $.event.special.mousewheel.settings.adjustOldDeltas to false.
         return special.settings.adjustOldDeltas && orgEvent.type === 'mousewheel' && absDelta % 120 === 0;
+    }
+
+    // Used by intent and delay handlers
+    function preventAndStopIfSet(settings, event) {
+        if (settings.preventDefault  === true) { event.preventDefault();  }
+        if (settings.stopPropagation === true) { event.stopPropagation(); }
     }
 
 }));
