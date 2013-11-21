@@ -207,7 +207,7 @@
                 newHandler = function(event) {
                     if (settings.preventDefault  === true) { event.preventDefault();  }
                     if (settings.stopPropagation === true) { event.stopPropagation(); }
-                    if (hasIntent) { oldHandler.apply(elem, arguments); }
+                    if (hasIntent) { return oldHandler.apply(elem, arguments); }
                 };
 
             $(elem).on('mouseenter', function(event) {
@@ -224,35 +224,55 @@
         },
 
         _delayHandler: function(handleObj) {
-            var timeout, lastRun,
+            var delayTimeout, maxTimeout, lastRun,
                 elem       = this,
                 method     = "throttle" in handleObj.data.mousewheel ? "throttle" : "debounce",
                 settings   = handleObj.data.mousewheel[method],
+                leading    = "leading" in settings ? settings.leading : method === "debounce" ? false : true,
+                trailing   = "trailing" in settings ? settings.trailing : true,
                 delay      = settings.delay || 100,
-                maxDelay   = settings.maxDelay,
+                maxDelay   = method === "throttle" ? delay : settings.maxDelay,
                 oldHandler = handleObj.handler,
                 newHandler = function(event) {
                     if ( settings.preventDefault  === true ) { event.preventDefault();  }
                     if ( settings.stopPropagation === true ) { event.stopPropagation(); }
 
-                    var args    = arguments,
-                        elapsed = +new Date() - lastRun,
-                        delayed = function() {
+                    var args = arguments,
+                        clear = function() {
+                            if ( maxTimeout ) { clearTimeout(maxTimeout); }
+                            delayTimeout  = null;
+                            maxTimeout    = null;
+                            lastRun       = null;
+                        },
+                        run = function() {
                             lastRun = +new Date();
-                            oldHandler.apply(elem, args);
-                        };
+                            return oldHandler.apply(elem, args);
+                        },
+                        maxDelayed = function() {
+                            run();
+                            maxTimeout = null;
+                        },
+                        delayed = function() {
+                            clear();
+                            if ( trailing ) { run(); }
+                        },
+                        result;
 
-                    if ( method === "debounce" && timeout ) {
-                        clearTimeout(timeout);
-                    }
-                    if ( method === "throttle" && !timeout || method === "debounce" ) {
-                        timeout = setTimeout(function() {
-                          timeout = null;
-                          delayed();
-                        }, delay);
+                    if ( delayTimeout ) {
+                        clearTimeout(delayTimeout);
+                    } else {
+                        if ( leading ) { result = run(); }
                     }
 
-                    if ( maxDelay && elapsed >= maxDelay ) { delayed(); }
+                    delayTimeout = setTimeout(delayed, delay);
+
+                    if ( method === "throttle" ) {
+                        if ( maxDelay && (+new Date() - lastRun) >= maxDelay ) { result = maxDelayed(); }
+                    } else if ( maxDelay && !maxTimeout ) {
+                        maxTimeout = setTimeout(maxDelayed, maxDelay);
+                    }
+
+                    return result;
                 };
             handleObj.handler = newHandler;
         }
