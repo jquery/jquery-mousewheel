@@ -17,19 +17,28 @@
     }
 }(function ($) {
 
+        // Events that need to be added to fixHooks
     var toFix  = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'],
+        // Events that will be listened for
+        // The wheel event is most modern
+        // The DomMouseScroll and MozMousePixelScroll are for older Firefoxs
         toBind = ( 'onwheel' in document || document.documentMode >= 9 ) ?
                     ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'],
         slice  = Array.prototype.slice,
         nullLowestDeltaTimeout, lowestDelta;
 
+    // Make sure we register the toFix events as mouse related
+    // events so jQuery will apply standard mouse fixes
     for ( var i = toFix.length; i; ) {
         $.event.fixHooks[ toFix[--i] ] = $.event.mouseHooks;
     }
 
+    // The mousewheel special event
     var special = $.event.special.mousewheel = {
         version: '4.0.0-pre',
 
+        // Runs once per an element
+        // Tell jQuery we'll handle how the event is added
         setup: function() {
             if ( this.addEventListener ) {
                 for ( var i = toBind.length; i; ) {
@@ -43,19 +52,42 @@
             $.data(this, 'mousewheel-page-height', special._getPageHeight(this));
         },
 
+        // Runs once per an event handler
+        // Use this to modify the handler function
+        // based on any "settings" that are passed
         add: function(handleObj) {
-            var data = handleObj.data,
+            // Settings are stored in mousewheel namespace on the data object
+            var data     = handleObj.data,
                 settings = data && data.mousewheel;
             if ( settings ) {
+                // throttle and debounce get applied first
                 if ( "throttle" in settings || "debounce" in settings ) {
                     special._delayHandler.call(this, handleObj);
                 }
+                // intent gets applied last so that it will be called
+                // first since it deals with the initial interaction
                 if ( "intent" in settings ) {
                     special._intentHandler.call(this, handleObj);
                 }
             }
         },
 
+        // Runs when $().trigger() is called
+        // Used to make sure the handler gets appropriately called
+        trigger: function(data, event) {
+            if (!event) {
+                event = data;
+                data  = null
+            }
+
+            handler.call(this, event);
+
+            // Let jQuery know we fully handled the trigger call
+            return false;
+        },
+
+        // Runs once per an element
+        // Tell jQuery we'll handle how the event is removed
         teardown: function() {
             if ( this.removeEventListener ) {
                 for ( var i = toBind.length; i; ) {
@@ -69,22 +101,17 @@
             $.removeData(this, 'mousewheel-page-height');
         },
 
-        trigger: function(data, event) {
-            if (!event) {
-                event = data;
-                data = null
-            }
-
-            handler.call(this, event);
-
-            return false;
-        },
-
         settings: {
             adjustOldDeltas: true, // see shouldAdjustOldDeltas() below
             normalizeOffset: true  // calls getBoundingClientRect for each event
         },
 
+        // Used to get the page height multiplier when deltaMode is 2
+        _getPageHeight: function(elem) {
+            return $(elem).height();
+        },
+
+        // Used to get the line height multiplier when deltaMode is 1
         _getLineHeight: function(elem) {
             var $elem = $(elem),
                 $parent = $elem['offsetParent' in $.fn ? 'offsetParent' : 'parent']();
@@ -94,10 +121,7 @@
             return parseInt($parent.css('fontSize'), 10) || parseInt($elem.css('fontSize'), 10) || 16;
         },
 
-        _getPageHeight: function(elem) {
-            return $(elem).height();
-        },
-
+        // All the related delta fixing logic
         _fix: function(orgEvent) {
             var deltaX   = 0,
                 deltaY   = 0,
@@ -184,6 +208,15 @@
             return event;
         },
 
+        // Returns a new handler that checks for users intent
+        // by monitoring the mouse movement
+        // Can use as:
+        //   { mousewheel: { intent: true } }
+        // Or customize the default settings:
+        //   { mousewheel: { intent { interval: 300, sensitivity: 2 } }
+        // Can also pass preventDefault and stopPropagation which will
+        // be called for all events that aren't passed to the original
+        // event handler.
         _intentHandler: function(handleObj) {
             var timeout, pX, pY, cX, cY,
                 hasIntent   = false,
@@ -222,6 +255,14 @@
             handleObj.handler = newHandler;
         },
 
+        // Returns a new handler that uses either throttling or debouncing
+        // Can be used as:
+        //   { mousewheel: { debounce: true } }
+        //   { mousewheel: { throttle: true } }
+        // Or customize the default settings
+        //   { mousewheel: { debounce: { delay: 500, maxDelay: 2000 } }
+        // Can also pass preventDefault and stopPropagation which will
+        // be called for all events.
         _delayHandler: function(handleObj) {
             var delayTimeout, maxTimeout, lastRun,
                 elem       = this,
@@ -268,14 +309,17 @@
                         maxTimeout = setTimeout(maxDelayed, maxDelay);
                     }
 
+                    preventAndStopIfSet(settings, event);
+
                     return result;
                 };
             handleObj.handler = newHandler;
         }
     };
 
+    // What is actually bound to the element
     function handler(event) {
-        // might be trigged event, so check for the originalEvent first
+        // Might be trigged event, so check for the originalEvent first
         var orgEvent = event ? event.originalEvent || event : window.event,
             args     = slice.call(arguments, 1);
 
@@ -294,6 +338,7 @@
         return $.event.dispatch.apply(this, args);
     }
 
+    // Used to clear out the last lowest delta value in a delayed fashion
     function nullLowestDelta() {
         lowestDelta = null;
     }
