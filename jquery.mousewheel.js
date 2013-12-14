@@ -1,7 +1,7 @@
 /*! Copyright (c) 2013 Brandon Aaron (http://brandon.aaron.sh)
  * Licensed under the MIT License (LICENSE.txt).
  *
- * Version: 3.1.6
+ * Version: 3.1.7
  *
  * Requires: jQuery 1.2.2+
  */
@@ -31,7 +31,7 @@
         }
     }
 
-    $.event.special.mousewheel = {
+    var special = $.event.special.mousewheel = {
         version: '3.1.6',
 
         setup: function() {
@@ -42,6 +42,9 @@
             } else {
                 this.onmousewheel = handler;
             }
+            // Store the line height and page height for this particular element
+            $.data(this, 'mousewheel-line-height', special.getLineHeight(this));
+            $.data(this, 'mousewheel-page-height', special.getPageHeight(this));
         },
 
         teardown: function() {
@@ -52,6 +55,14 @@
             } else {
                 this.onmousewheel = null;
             }
+        },
+
+        getLineHeight: function(elem) {
+            return parseInt($(elem)['offsetParent' in $.fn ? 'offsetParent' : 'parent']().css('fontSize'), 10);
+        },
+
+        getPageHeight: function(elem) {
+            return $(elem).height();
         }
     };
 
@@ -104,10 +115,39 @@
         // No change actually happened, no reason to go any further
         if ( deltaY === 0 && deltaX === 0 ) { return; }
 
+        // Need to convert lines and pages to pixels if we aren't already in pixels
+        // There are three delta modes:
+        //   * deltaMode 0 is by pixels, nothing to do
+        //   * deltaMode 1 is by lines
+        //   * deltaMode 2 is by pages
+        if ( orgEvent.deltaMode === 1 ) {
+            var lineHeight = $.data(this, 'mousewheel-line-height');
+            delta  *= lineHeight;
+            deltaY *= lineHeight;
+            deltaX *= lineHeight;
+        } else if ( orgEvent.deltaMode === 2 ) {
+            var pageHeight = $.data(this, 'mousewheel-page-height');
+            delta  *= pageHeight;
+            deltaY *= pageHeight;
+            deltaX *= pageHeight;
+        }
+
         // Store lowest absolute delta to normalize the delta values
         absDelta = Math.max( Math.abs(deltaY), Math.abs(deltaX) );
+
         if ( !lowestDelta || absDelta < lowestDelta ) {
             lowestDelta = absDelta;
+        }
+
+        // Assuming that if the lowestDelta is 120, then that the browser
+        // is treating this as an older mouse wheel event.
+        // We'll divide it by 40 to try and get a more usable deltaFactor.
+        if ( lowestDelta === 120 ) {
+            // Divide all the things by 40!
+            delta       /= 40;
+            deltaX      /= 40;
+            deltaY      /= 40;
+            lowestDelta /= 40;
         }
 
         // Get a whole, normalized value for the deltas
@@ -119,6 +159,10 @@
         event.deltaX = deltaX;
         event.deltaY = deltaY;
         event.deltaFactor = lowestDelta;
+        // Go ahead and set deltaMode to 0 since we converted to pixels
+        // Although this is a little odd since we overwrite the deltaX/Y
+        // properties with normalized deltas.
+        event.deltaMode = 0;
 
         // Add event and delta to the front of the arguments
         args.unshift(event, delta, deltaX, deltaY);
@@ -138,4 +182,3 @@
     }
 
 }));
-
