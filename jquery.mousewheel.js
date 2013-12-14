@@ -61,12 +61,12 @@
                 settings = data && data.mousewheel;
             if ( settings ) {
                 // throttle and debounce get applied first
-                if ( "throttle" in settings || "debounce" in settings ) {
+                if ( 'throttle' in settings || 'debounce' in settings ) {
                     special._delayHandler.call(this, handleObj);
                 }
                 // intent gets applied last so that it will be called
                 // first since it deals with the initial interaction
-                if ( "intent" in settings ) {
+                if ( 'intent' in settings ) {
                     special._intentHandler.call(this, handleObj);
                 }
             }
@@ -77,7 +77,7 @@
         trigger: function(data, event) {
             if (!event) {
                 event = data;
-                data  = null
+                data  = null;
             }
 
             handler.call(this, event);
@@ -226,14 +226,16 @@
                 sensitivity = settings.sensitivity || 7,
                 oldHandler  = handleObj.handler,
                 track       = function(event) {
-                    cX = event.pageX; cY = event.pageY;
+                    cX = event.pageX;
+                    cY = event.pageY;
                 },
                 compare    = function() {
                     if ( (Math.abs(pX-cX) + Math.abs(pY-cY)) < sensitivity ) {
                         $(elem).off('mousemove', track);
                         hasIntent = true;
                     } else {
-                        pX = cX; pY = cY;
+                        pX = cX;
+                        pY = cY;
                         timeout = setTimeout(compare, interval);
                     }
                 },
@@ -242,11 +244,12 @@
                     else { preventAndStopIfSet(settings, event); }
                 };
 
-            $(elem).on('mouseenter', function(event) {
-                pX = event.pageX; pY = event.pageY;
+            $(elem).on('mouseenter', function() {
+                pX = event.pageX;
+                pY = event.pageY;
                 $(elem).on('mousemove', track);
                 timeout = setTimeout(compare, interval);
-            }).on('mouseleave', function(event) {
+            }).on('mouseleave', function() {
                 if (timeout) { clearTimeout(timeout); }
                 $(elem).off('mousemove', track);
                 hasIntent = false;
@@ -266,12 +269,12 @@
         _delayHandler: function(handleObj) {
             var delayTimeout, maxTimeout, lastRun,
                 elem       = this,
-                method     = "throttle" in handleObj.data.mousewheel ? "throttle" : "debounce",
+                method     = 'throttle' in handleObj.data.mousewheel ? 'throttle' : 'debounce',
                 settings   = handleObj.data.mousewheel[method],
-                leading    = "leading" in settings ? settings.leading : method === "debounce" ? false : true,
-                trailing   = "trailing" in settings ? settings.trailing : true,
+                leading    = 'leading' in settings ? settings.leading : method === 'debounce' ? false : true,
+                trailing   = 'trailing' in settings ? settings.trailing : true,
                 delay      = settings.delay || 100,
-                maxDelay   = method === "throttle" ? delay : settings.maxDelay,
+                maxDelay   = method === 'throttle' ? delay : settings.maxDelay,
                 oldHandler = handleObj.handler,
                 newHandler = function(event) {
                     var args = arguments,
@@ -303,7 +306,7 @@
 
                     delayTimeout = setTimeout(delayed, delay);
 
-                    if ( method === "throttle" ) {
+                    if ( method === 'throttle' ) {
                         if ( maxDelay && (+new Date() - lastRun) >= maxDelay ) { result = maxDelayed(); }
                     } else if ( maxDelay && !maxTimeout ) {
                         maxTimeout = setTimeout(maxDelayed, maxDelay);
