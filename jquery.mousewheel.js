@@ -138,10 +138,10 @@
         if ( !lowestDelta || absDelta < lowestDelta ) {
             lowestDelta = absDelta;
 
-            // Assuming that if the lowestDelta is 120, then that the browser
+            // Assuming that if the lowestDelta is greater or equal to 120, then that the browser
             // is treating this as an older mouse wheel event.
             // We'll divide it by 40 to try and get a more usable deltaFactor.
-            if ( lowestDelta === 120 ) {
+            if ( lowestDelta >= 120 ) {
                 oldMode = true;
                 lowestDelta /= 40;
             }
