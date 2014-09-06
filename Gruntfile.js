@@ -33,6 +33,14 @@ module.exports = function(grunt) {
                     }
                 }
             }
+        },
+        bump: {
+            options: {
+                files: ['package.json', 'mousewheel.jquery.json', 'bower.json', 'jquery.mousewheel.js'],
+                commit: false,
+                createTag: false,
+                push: false
+            }
         }
     });
 
@@ -40,6 +48,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-bump');
 
     // Default task(s).
     grunt.registerTask('default', ['jshint', 'uglify']);
