@@ -132,7 +132,7 @@
                 };
 
                 $(document)
-                    .mousewheel(function(event, delta) {
+                    .on('mousewheel', function(event, delta) {
                         loghandle(event, delta);
                     });
 

@@ -126,6 +126,8 @@
             var deltaX   = 0,
                 deltaY   = 0,
                 absDelta = 0,
+                offsetX  = 0,
+                offsetY  = 0;
                 event    = $.event.fix(orgEvent);
 
             // Old school scrollwheel delta
