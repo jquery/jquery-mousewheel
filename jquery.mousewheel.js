@@ -12,7 +12,7 @@
         define(['jquery'], factory);
     } else if (typeof exports === 'object') {
         // Node/CommonJS style for Browserify
-        module.exports = factory;
+        module.exports = factory(require('jquery'));
     } else {
         // Browser globals
         factory(jQuery);
