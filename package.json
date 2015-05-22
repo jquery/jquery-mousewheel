@@ -45,9 +45,7 @@
   "directories": {
     "test": "test"
   },
-  "jam": {
-    "dependencies": {
-      "jquery": ">=1.7.0"
-    }
+  "peerDependencies": {
+    "jquery": ">=1.7.0"
   }
 }
