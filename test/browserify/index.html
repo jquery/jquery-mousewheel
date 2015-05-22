@@ -1,4 +1,16 @@
-<script src="bundle.js"></script>
-<script>
-    $(document).bind('mousewheel', function(e) { console.log(e); });
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Mouse Wheel - Browserify Test</title>
+	<script src="bundle.js"></script>
+	<script>
+	$(function(){
+		$(document).bind('mousewheel', function(e) { console.log(e); });
+	});
+	</script>
+</head>
+<body>
+
+</body>
+</html>

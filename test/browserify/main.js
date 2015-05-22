@@ -1,2 +1,2 @@
-var $ = require('jquery-browserify');
-require('../../jquery.mousewheel.js')($);
+$ = require('jquery');
+require('../../jquery.mousewheel.js');
