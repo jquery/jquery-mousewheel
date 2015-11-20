@@ -32,7 +32,7 @@ event handler is now deprecated and will be removed in later releases.
 
 ## The Deltas...
 
-The combination of Browsers, Operating Systems, and Devices offer a huge range of possible delta values. In fact if the user
+The combination of browsers, operating systems, and devices offer a huge range of possible delta values. In fact if the user
 uses a trackpad and then a physical mouse wheel the delta values can differ wildly. This plugin normalizes those
 values so you get a whole number starting at +-1 and going up in increments of +-1 according to the force or
 acceleration that is used. This number has the potential to be in the thousands depending on the device.
