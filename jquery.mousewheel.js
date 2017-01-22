@@ -32,7 +32,7 @@
     }
 
     var special = $.event.special.mousewheel = {
-        version: '3.1.12',
+        version: '3.1.13',
 
         setup: function() {
             if ( this.addEventListener ) {
