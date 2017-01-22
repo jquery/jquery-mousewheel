@@ -198,13 +198,11 @@
         // a different lowestDelta
         // Ex: trackpad = 3 and mouse wheel = 120
         if (nullLowestDeltaTimeout) { clearTimeout(nullLowestDeltaTimeout); }
-        nullLowestDeltaTimeout = setTimeout(nullLowestDelta, 200);
+        nullLowestDeltaTimeout = setTimeout(function() {
+            lowestDelta = null;
+        }, 200);
 
         return ($.event.dispatch || $.event.handle).apply(this, args);
-    }
-
-    function nullLowestDelta() {
-        lowestDelta = null;
     }
 
     function shouldAdjustOldDeltas(orgEvent, absDelta) {
