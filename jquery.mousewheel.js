@@ -37,7 +37,7 @@
         setup: function() {
             if ( this.addEventListener ) {
                 for ( var i = toBind.length; i; ) {
-                    this.addEventListener( toBind[--i], handler, false );
+                    this.addEventListener( toBind[--i], handler, {passive: true} );
                 }
             } else {
                 this.onmousewheel = handler;
