@@ -13,7 +13,5 @@
     "plusplus": false,
     "quotmark": "single",
     "strict": false,
-    "trailing": true,
-    "unused": true,
-    "globals": { "define": true, "require": true }
+    "unused": true
 }
