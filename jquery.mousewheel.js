@@ -117,6 +117,18 @@
         // Set delta to be deltaY or deltaX if deltaY is 0 for backwards compatabilitiy
         delta = deltaY === 0 ? deltaX : deltaY;
 
+        if ( orgEvent.axis ) {
+            if ( orgEvent.axis === HORIZONTAL_AXIS ) {
+                deltaX = delta;
+                deltaY = 0;
+            }
+
+            if ( orgEvent.axis === VERTICAL_AXIS ) {
+                deltaX = 0;
+                deltaY = delta;
+            }
+        }
+
         // New school wheel delta (wheel event)
         if ( 'deltaY' in orgEvent ) {
             deltaY = orgEvent.deltaY * -1;
