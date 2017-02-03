@@ -1,5 +1,8 @@
 # jQuery Mouse Wheel Plugin
 
+[![Build Status](https://secure.travis-ci.org/brandonaaron/jquery-mousewheel.svg)](http://travis-ci.org/brandonaaron/jquery-mousewheel)
+[![devDependency Status](https://david-dm.org/brandonaaron/jquery-mousewheel/dev-status.svg)](https://david-dm.org/brandonaaron/jquery-mousewheel#info=devDependencies)
+
 A [jQuery](http://jquery.com/) plugin that adds cross-browser mouse wheel support with delta normalization.
 
 #### Note: There is a [bug in Safari 9](https://github.com/jquery/jquery-mousewheel/issues/156) that prevents the plugin from working properly. See [this comment](https://github.com/jquery/jquery-mousewheel/issues/156#issuecomment-185433754) for some possible workarounds, and [watch this Webkit ticket](https://bugs.webkit.org/show_bug.cgi?id=149526) to find out if and when Apple will fix it.

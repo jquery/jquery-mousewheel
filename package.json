@@ -42,6 +42,9 @@
     "grunt-contrib-jshint": "~0.7.1",
     "grunt-contrib-uglify": "~0.2.7"
   },
+  "scripts": {
+    "test": "grunt"
+  },
   "directories": {
     "test": "test"
   },
