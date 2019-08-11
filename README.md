@@ -76,3 +76,12 @@ In your browser-side javascript:
 var $ = require('jquery-browserify');
 require('jquery-mousewheel')($);
 ```
+
+## Building the code in the repo
+
+```sh
+$ git clone git@github.com:jquery/jquery-mousewheel.git
+$ cd jquery-mousewheel/
+$ npm install
+$ npm run build
+```

@@ -31,18 +31,21 @@
     "README.md",
     "LICENSE.txt"
   ],
-  "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-connect": "~0.5.0",
-    "grunt-contrib-jshint": "~0.7.1",
-    "grunt-contrib-uglify": "~0.2.7"
-  },
   "directories": {
     "test": "test"
   },
-  "jam": {
-    "dependencies": {
-      "jquery": ">=1.2.2"
-    }
+  "scripts": {
+    "build": "npm run lint && npm run minify",
+    "minify": "uglifyjs jquery.mousewheel.js -o jquery.mousewheel.min.js",
+    "lint": "eslint jquery.mousewheel.js",
+    "test": "echo whoops"
+  },
+  "dependencies": {
+    "jquery": ">=1.7.2"
+  },
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-jquery": "^2.0.0",
+    "uglify-js": "^3.6.0"
   }
 }
