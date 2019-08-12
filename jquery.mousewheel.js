@@ -1,6 +1,5 @@
 /*!
  * jQuery Mousewheel 3.1.13
- *
  * Copyright OpenJS Foundation and other contributors
  */
 
