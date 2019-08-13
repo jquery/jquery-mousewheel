@@ -38,7 +38,8 @@
     "build": "npm run lint && npm run minify",
     "minify": "uglifyjs -m -c --comments /Copyright/ -o jquery.mousewheel.min.js -- jquery.mousewheel.js",
     "lint": "eslint jquery.mousewheel.js",
-    "test": "echo Load test/index.html in a browser for now"
+    "karma": "karma start test/karma.conf.js",
+    "test": "echo Use karma for unit tests or load test/index.html in a browser."
   },
   "dependencies": {
     "jquery": ">=1.7.2"
@@ -46,7 +47,13 @@
   "devDependencies": {
     "eslint": "^6.1.0",
     "eslint-config-jquery": "^2.0.0",
+    "karma": "^4.2.0",
+    "karma-chrome-launcher": "^3.0.0",
+    "karma-firefox-launcher": "^1.2.0",
+    "karma-qunit": "^4.0.0",
+    "karma-requirejs": "^1.1.0",
     "qunit": "^2.9.2",
+    "requirejs": "^2.3.6",
     "uglify-js": "^3.6.0"
   }
 }

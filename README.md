@@ -82,4 +82,9 @@ $ git clone git@github.com:jquery/jquery-mousewheel.git
 $ cd jquery-mousewheel/
 $ npm install
 $ npm run build
+$ npm run karma
 ```
+
+The unit tests run by karma are _very_ basic sanity checks; improvements welcome.
+To fully test the plugin, load [test/index.html](test/index.html) in each supported
+browser and follow the instructions at the top of the file after the unit tests finish.
