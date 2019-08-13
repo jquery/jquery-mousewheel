@@ -1,4 +1,6 @@
 module.exports = {
+    root: true,
+
     // Support: IE11 without transpilation
     "parserOptions": {
         "ecmaVersion": 5

@@ -38,7 +38,7 @@
     "build": "npm run lint && npm run minify",
     "minify": "uglifyjs -m -c --comments /Copyright/ -o jquery.mousewheel.min.js -- jquery.mousewheel.js",
     "lint": "eslint jquery.mousewheel.js",
-    "test": "echo whoops"
+    "test": "echo Load test/index.html in a browser for now"
   },
   "dependencies": {
     "jquery": ">=1.7.2"
@@ -46,6 +46,7 @@
   "devDependencies": {
     "eslint": "^6.1.0",
     "eslint-config-jquery": "^2.0.0",
+    "qunit": "^2.9.2",
     "uglify-js": "^3.6.0"
   }
 }
