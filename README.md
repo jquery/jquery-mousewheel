@@ -47,34 +47,6 @@ event property to find the scroll distance the browser reported.
 The `deltaFactor` property was added to the event object in 3.1.5 so that the actual reported delta value can be
 extracted. This is a non-standard property.
 
-
-## Using with [Browserify](http://browserify.org)
-
-Support for browserify is baked in.
-
-```bash
-npm install jquery-mousewheel
-npm install jquery-browserify
-```
-
-In your server-side node.js code:
-
-```js
-var express = require('express');
-var app = express.createServer();
-
-app.use(require('browserify')({
-    require : [ 'jquery-browserify', 'jquery-mousewheel' ]
-}));
-```
-
-In your browser-side javascript:
-
-```js
-var $ = require('jquery-browserify');
-require('jquery-mousewheel')($);
-```
-
 ## Building the code in the repo
 
 ```sh
