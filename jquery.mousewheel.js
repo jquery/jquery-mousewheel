@@ -84,11 +84,11 @@
 
     $.fn.extend( {
         mousewheel: function( fn ) {
-            return fn ? this.bind( "mousewheel", fn ) : this.trigger( "mousewheel" );
+            return fn ? this.on( "mousewheel", fn ) : this.trigger( "mousewheel" );
         },
 
         unmousewheel: function( fn ) {
-            return this.unbind( "mousewheel", fn );
+            return this.off( "mousewheel", fn );
         }
     } );
 

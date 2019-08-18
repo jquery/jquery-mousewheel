@@ -30,7 +30,11 @@ QUnit.test( ".mousewheel() shorthand", function( assert ) {
     markup.mousewheel( function( e ) {
         assert.ok( true, "triggered a mousewheel event on " + e.target.innerText );
     } );
-    markup.trigger( "mousewheel" );
+    markup.mousewheel();
+
+    // Should not trigger another event
+    markup.unmousewheel();
+    markup.mousewheel();
 
     markup.remove();
 } );
