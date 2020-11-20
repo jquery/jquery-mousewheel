@@ -54,7 +54,7 @@ $ git clone git@github.com:jquery/jquery-mousewheel.git
 $ cd jquery-mousewheel/
 $ npm install
 $ npm run build
-$ npm run karma
+$ npm run karma.
 ```
 
 The unit tests run by karma are _very_ basic sanity checks; improvements welcome.
