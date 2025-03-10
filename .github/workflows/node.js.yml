@@ -1,0 +1,124 @@
+name: Node
+
+on:
+  pull_request:
+  push:
+    branches-ignore:
+      - "dependabot/**"
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    name: ${{ matrix.NPM_SCRIPT }} - ${{ matrix.NAME }} (${{ matrix.NODE_VERSION }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - NAME: "Node"
+            NODE_VERSION: "22.x"
+            NPM_SCRIPT: "lint"
+          - NAME: "Chrome/Firefox"
+            NODE_VERSION: "22.x"
+            NPM_SCRIPT: "test:browser"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Use Node.js ${{ matrix.NODE_VERSION }}
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version: ${{ matrix.NODE_VERSION }}
+
+      - name: Cache
+        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-npm-lock-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-npm-lock-
+
+      - name: Set download URL for Firefox ESR (old)
+        run: |
+          echo "FIREFOX_SOURCE_URL=https://download.mozilla.org/?product=firefox-esr-latest-ssl&lang=en-US&os=linux64" >> "$GITHUB_ENV"
+        if: contains(matrix.NAME, 'Firefox ESR (old)')
+
+      - name: Set download URL for Firefox ESR (new)
+        run: |
+          echo "FIREFOX_SOURCE_URL=https://download.mozilla.org/?product=firefox-esr-next-latest-ssl&lang=en-US&os=linux64" >> "$GITHUB_ENV"
+        if: contains(matrix.NAME, 'Firefox ESR (new)')
+
+      - name: Install Firefox ESR
+        run: |
+          wget --no-verbose $FIREFOX_SOURCE_URL -O - | tar -jx -C ${HOME}
+          echo "PATH=${HOME}/firefox:$PATH" >> "$GITHUB_ENV"
+          echo "FIREFOX_BIN=${HOME}/firefox/firefox" >> "$GITHUB_ENV"
+        if: contains(matrix.NAME, 'Firefox ESR')
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build for linting
+        run: npm run build
+        if: contains(matrix.NPM_SCRIPT, 'lint')
+
+      - name: Run tests
+        run: npm run ${{ matrix.NPM_SCRIPT }}
+
+  ie:
+    runs-on: windows-latest
+    env:
+      NODE_VERSION: 22.x
+    name: test:ie - IE
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache
+        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ env.NODE_VERSION }}-npm-lock-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ env.NODE_VERSION }}-npm-lock-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests in Edge in IE mode
+        run: npm run test:ie
+
+  safari:
+    runs-on: macos-latest
+    env:
+      NODE_VERSION: 22.x
+    name: test:safari - Safari
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache
+        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ env.NODE_VERSION }}-npm-lock-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ env.NODE_VERSION }}-npm-lock-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test:safari
