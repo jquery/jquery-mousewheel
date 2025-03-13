@@ -1,3 +1,5 @@
+"use strict";
+
 QUnit.module( "mousewheel" );
 
 function makeWheelEvent( deltaX, deltaY ) {
@@ -10,20 +12,20 @@ function makeWheelEvent( deltaX, deltaY ) {
 }
 
 QUnit.test( ".on() and .trigger()", function( assert ) {
-	assert.expect( 1 );
+    assert.expect( 1 );
 
     var markup = jQuery( "<div>wheelme</div>" ).appendTo( "body" );
 
     markup.on( "mousewheel", function( e ) {
         assert.ok( true, "triggered a mousewheel event on " + e.target.innerText );
     } );
-     markup.trigger( "mousewheel" );
+    markup.trigger( "mousewheel" );
 
-     markup.remove();
+    markup.remove();
 } );
 
 QUnit.test( ".mousewheel() shorthand", function( assert ) {
-	assert.expect( 1 );
+    assert.expect( 1 );
 
     var markup = jQuery( "<p>wheelme</p>" ).appendTo( "body" );
 
@@ -40,7 +42,7 @@ QUnit.test( ".mousewheel() shorthand", function( assert ) {
 } );
 
 QUnit.test( "natively triggered events", function( assert ) {
-	assert.expect( 6 );
+    assert.expect( 6 );
 
     var markup = jQuery( "<p>wheelme</p>" ).appendTo( "body" );
 
@@ -61,7 +63,7 @@ QUnit.test( "natively triggered events", function( assert ) {
 } );
 
 QUnit.test( "mouse event properties are passed through", function( assert ) {
-	assert.expect( 4 );
+    assert.expect( 4 );
 
     var markup = jQuery( "<p>wheelme</p>" ).appendTo( "body" );
 

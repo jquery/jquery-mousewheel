@@ -4,6 +4,8 @@
  */
 
 ( function( factory ) {
+    "use strict";
+
     if ( typeof define === "function" && define.amd ) {
 
         // AMD. Register as an anonymous module.
@@ -18,10 +20,11 @@
         factory( jQuery );
     }
 } )( function( $ ) {
+    "use strict";
 
     var toFix  = [ "wheel", "mousewheel", "DOMMouseScroll", "MozMousePixelScroll" ],
         toBind = ( "onwheel" in window.document || window.document.documentMode >= 9 ) ?
-                    [ "wheel" ] : [ "mousewheel", "DomMouseScroll", "MozMousePixelScroll" ],
+            [ "wheel" ] : [ "mousewheel", "DomMouseScroll", "MozMousePixelScroll" ],
         slice  = Array.prototype.slice,
         nullLowestDeltaTimeout, lowestDelta;
 

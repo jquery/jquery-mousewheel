@@ -1,3 +1,19 @@
+.project
+.settings
+*~
+*.diff
+*.patch
 .DS_Store
-/npm-debug.log
+.bower.json
+.sizecache.json
+yarn.lock
+.eslintcache
+tmp
+
+npm-debug.log*
+
 /node_modules
+
+# Ignore BrowserStack testing files
+local.log
+browserstack.err

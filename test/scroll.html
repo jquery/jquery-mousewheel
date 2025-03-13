@@ -12,33 +12,36 @@
       #native { float: right; overflow: auto; }
     </style>
     <script>
-      (function() {
-        var verMatch = /v=([\w\.]+)/.exec(location.search),
-            version = verMatch && verMatch[1],
-            src;
-        if (version)
-          src = 'code.jquery.com/jquery-' + version;
-        else
-          src = 'code.jquery.com/jquery-git';
-        document.write('<script src="http://' + src + '.js"><\/script>');
-      })();
+      ( function() {
+          var src,
+              verMatch = /\bjquery=(\d\.\d\.\d(?:\.slim)?(?:\.min)?)/,
+              version = ( window.location.search.match( verMatch ) || [ "", "git" ] )[ 1 ];
+          if ( !version || version === "git" || version === "3.x-git" ) {
+              src = "https://releases.jquery.com/git/jquery-" + version + ".js"
+          } else {
+              src = "https://code.jquery.com/jquery-" + version + ".js";
+          }
+          document.write( "<script src=\"" + src + "\"><\/script>" );
+      } )();
     </script>
     <script src="../jquery.mousewheel.js"></script>
     <script>
-      var lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus rhoncus nibh ac ultricies blandit. Nunc blandit blandit lobortis. Maecenas id dolor scelerisque, facilisis dolor eu, interdum urna. Nullam consectetur lectus quis mi interdum accumsan. Nulla malesuada est nec neque suscipit pulvinar. Vivamus sagittis, nunc a porttitor tempus, mi neque eleifend diam, nec porttitor metus dui a orci. Cras tempus lobortis nisl ut sagittis. Maecenas semper in magna mollis venenatis. Vestibulum fermentum tincidunt fringilla.';
-      $(function() {
-        for (var i=0; i<30; i++) {
-          var html = '<p>' + i + ' ' + lorem + '</p>';
-          $('#emulated').append(html);
-          $('#native').append(html);
-        }
-        $('#emulated').bind('mousewheel', function(event) {
-          event.preventDefault();
-          var scrollTop = this.scrollTop;
-          this.scrollTop = (scrollTop + ((event.deltaY * event.deltaFactor) * -1));
-          //console.log(event.deltaY, event.deltaFactor, event.originalEvent.deltaMode, event.originalEvent.wheelDelta);
-        });
-      });
+      var lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus rhoncus nibh ac ultricies blandit. Nunc blandit blandit lobortis. Maecenas id dolor scelerisque, facilisis dolor eu, interdum urna. Nullam consectetur lectus quis mi interdum accumsan. Nulla malesuada est nec neque suscipit pulvinar. Vivamus sagittis, nunc a porttitor tempus, mi neque eleifend diam, nec porttitor metus dui a orci. Cras tempus lobortis nisl ut sagittis. Maecenas semper in magna mollis venenatis. Vestibulum fermentum tincidunt fringilla.";
+      $( function() {
+          for ( var i = 0; i < 30; i++ ) {
+              var html = "<p>" + i + " " + lorem + "</p>";
+              $( "#emulated" ).append( html );
+              $( "#native" ).append( html );
+          }
+          $( "#emulated" ).bind( "mousewheel", function( event ) {
+              event.preventDefault();
+              var scrollTop = this.scrollTop;
+              this.scrollTop = ( scrollTop + ( ( event.deltaY * event.deltaFactor ) * -1 ) );
+
+              // console.log( event.deltaY, event.deltaFactor,
+              //     event.originalEvent.deltaMode, event.originalEvent.wheelDelta );
+          } );
+      } );
     </script>
   </head>
   <body>
