@@ -1,8 +1,11 @@
 /*!
- * jQuery Mousewheel 3.2.2
+ * jQuery Mousewheel v@VERSION
+ * https://github.com/jquery/jquery-mousewheel
+ *
  * Copyright OpenJS Foundation and other contributors
+ * Released under the MIT license
+ * https://jquery.org/license
  */
-
 ( function( factory ) {
     "use strict";
 
@@ -36,7 +39,7 @@
     }
 
     var special = $.event.special.mousewheel = {
-        version: "3.2.2",
+        version: "@VERSION",
 
         setup: function() {
             if ( this.addEventListener ) {

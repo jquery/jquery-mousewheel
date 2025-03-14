@@ -3,7 +3,7 @@ import globals from "globals";
 
 export default [
     {
-        ignores: [ "**/*.min.js" ],
+        ignores: [ "dist/**/*.js" ],
         rules: {
             ...jqueryConfig.rules,
             indent: [ "error", 4 ]
@@ -11,7 +11,11 @@ export default [
     },
 
     {
-        files: [ "jquery.mousewheel.js", "jquery.mousewheel.min.js", "test/**/*.js" ],
+        files: [
+            "src/**/*.js",
+            "dist/**/*.js",
+            "test/**/*.js"
+        ],
         languageOptions: {
 
             // Support: IE 9 - 11+
@@ -31,7 +35,7 @@ export default [
     },
 
     {
-        files: [ "jquery.mousewheel.js" ],
+        files: [ "src/**/*.js" ],
         rules: {
             strict: [ "error", "function" ],
             indent: [
@@ -61,7 +65,21 @@ export default [
     },
 
     {
-        files: [ "eslint.config.mjs", "build/**/*.mjs" ],
+        files: [ "*.js" ],
+        languageOptions: {
+            ecmaVersion: "latest",
+            sourceType: "commonjs",
+            globals: {
+                ...globals.node
+            }
+        },
+        rules: {
+            ...jqueryConfig.rules
+        }
+    },
+
+    {
+        files: [ "*.mjs", "build/**/*.mjs" ],
         languageOptions: {
             ecmaVersion: "latest",
             sourceType: "module",

@@ -12,6 +12,7 @@ tmp
 
 npm-debug.log*
 
+/dist
 /node_modules
 
 # Ignore BrowserStack testing files

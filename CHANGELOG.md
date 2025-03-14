@@ -1,4 +1,4 @@
-# Mouse Wheel ChangeLog
+# Mouse Wheel Change Log
 
 ## 3.2.2
 
