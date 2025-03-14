@@ -2,6 +2,9 @@
 
 QUnit.module( "mousewheel" );
 
+var modernEvents = !!jQuery.fn.on,
+    on = modernEvents ? "on" : "bind";
+
 function makeWheelEvent( deltaX, deltaY ) {
     var event = window.document.createEvent( "Event" );
     event.initEvent( "wheel", true, true );
@@ -16,7 +19,7 @@ QUnit.test( ".on() and .trigger()", function( assert ) {
 
     var markup = jQuery( "<div>wheelme</div>" ).appendTo( "body" );
 
-    markup.on( "mousewheel", function( e ) {
+    markup[ on ]( "mousewheel", function( e ) {
         assert.ok( true, "triggered a mousewheel event on " + e.target.innerText );
     } );
     markup.trigger( "mousewheel" );
@@ -46,7 +49,7 @@ QUnit.test( "natively triggered events", function( assert ) {
 
     var markup = jQuery( "<p>wheelme</p>" ).appendTo( "body" );
 
-    markup.on( "mousewheel", function( e ) {
+    markup[ on ]( "mousewheel", function( e ) {
         assert.ok( true, "triggered a mousewheel event on " + e.target.innerText );
         assert.ok( "deltaX" in e, "got a deltaX in the event" );
         assert.ok( !isNaN( parseFloat( e.deltaY ) ), "deltaY is a number: " + e.deltaY );
@@ -67,7 +70,7 @@ QUnit.test( "mouse event properties are passed through", function( assert ) {
 
     var markup = jQuery( "<p>wheelme</p>" ).appendTo( "body" );
 
-    markup.on( "mousewheel", function( e ) {
+    markup[ on ]( "mousewheel", function( e ) {
         var org = e.originalEvent;
         assert.equal( org.clientX, 342, "original event has clientX: " + org.clientX );
         assert.equal( org.clientY, 301, "original event has clientY: " + org.clientY );

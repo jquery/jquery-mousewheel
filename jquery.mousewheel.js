@@ -22,11 +22,12 @@
 } )( function( $ ) {
     "use strict";
 
-    var toFix  = [ "wheel", "mousewheel", "DOMMouseScroll", "MozMousePixelScroll" ],
+    var nullLowestDeltaTimeout, lowestDelta,
+        modernEvents = !!$.fn.on,
+        toFix  = [ "wheel", "mousewheel", "DOMMouseScroll", "MozMousePixelScroll" ],
         toBind = ( "onwheel" in window.document || window.document.documentMode >= 9 ) ?
             [ "wheel" ] : [ "mousewheel", "DomMouseScroll", "MozMousePixelScroll" ],
-        slice  = Array.prototype.slice,
-        nullLowestDeltaTimeout, lowestDelta;
+        slice  = Array.prototype.slice;
 
     if ( $.event.fixHooks ) {
         for ( var i = toFix.length; i; ) {
@@ -87,11 +88,13 @@
 
     $.fn.extend( {
         mousewheel: function( fn ) {
-            return fn ? this.on( "mousewheel", fn ) : this.trigger( "mousewheel" );
+            return fn ?
+                this[ modernEvents ? "on" : "bind" ]( "mousewheel", fn ) :
+                this.trigger( "mousewheel" );
         },
 
         unmousewheel: function( fn ) {
-            return this.off( "mousewheel", fn );
+            return this[ modernEvents ? "off" : "unbind" ]( "mousewheel", fn );
         }
     } );
 
@@ -126,7 +129,7 @@
             deltaY = 0;
         }
 
-        // Set delta to be deltaY or deltaX if deltaY is 0 for backwards compatabilitiy
+        // Set delta to be deltaY or deltaX if deltaY is 0 for backwards compatability
         delta = deltaY === 0 ? deltaX : deltaY;
 
         // New school wheel delta (wheel event)

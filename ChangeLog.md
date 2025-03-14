@@ -1,5 +1,13 @@
 # Mouse Wheel ChangeLog
 
+## 3.2.0
+
+* Use `.on()`/`.off()` for event binding where available
+* Don't clobber mouse offset properties if we don't adjust them (#165)
+* Remove moot `version` property from bower.json (#140)
+* Remove the executable bit from the library (#176)
+* Add jtr-based tests in GitHub Actions, migrate to ESLint flat config (#247)
+
 ## 3.1.13
 
 * Update copyright notice and license to remove years
