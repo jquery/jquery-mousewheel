@@ -212,25 +212,23 @@
         // Add event and delta to the front of the arguments
         args.unshift( event, delta, deltaX, deltaY );
 
-        // Clearout lowestDelta after sometime to better
+        // Clear out lowestDelta after sometime to better
         // handle multiple device types that give different
         // a different lowestDelta
         // Ex: trackpad = 3 and mouse wheel = 120
         if ( nullLowestDeltaTimeout ) {
             window.clearTimeout( nullLowestDeltaTimeout );
         }
-        nullLowestDeltaTimeout = window.setTimeout( nullLowestDelta, 200 );
+        nullLowestDeltaTimeout = window.setTimeout( function() {
+            lowestDelta = null;
+        }, 200 );
 
         return ( $.event.dispatch || $.event.handle ).apply( this, args );
     }
 
-    function nullLowestDelta() {
-        lowestDelta = null;
-    }
-
     function shouldAdjustOldDeltas( orgEvent, absDelta ) {
 
-        // If this is an older event and the delta is divisable by 120,
+        // If this is an older event and the delta is divisible by 120,
         // then we are assuming that the browser is treating this as an
         // older mouse wheel event and that we should divide the deltas
         // by 40 to try and get a more usable deltaFactor.
