@@ -1,5 +1,9 @@
 # Mouse Wheel ChangeLog
 
+## 3.2.1
+
+* Update README
+
 ## 3.2.0
 
 * Use `.on()`/`.off()` for event binding where available
