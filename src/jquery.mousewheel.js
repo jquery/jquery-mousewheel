@@ -26,29 +26,17 @@
 	"use strict";
 
 	var nullLowestDeltaTimeout, lowestDelta,
-		modernEvents = !!$.fn.on,
-		toFix  = [ "wheel", "mousewheel", "DOMMouseScroll", "MozMousePixelScroll" ],
-		toBind = ( "onwheel" in window.document || window.document.documentMode >= 9 ) ?
-			[ "wheel" ] : [ "mousewheel", "DomMouseScroll", "MozMousePixelScroll" ],
 		slice  = Array.prototype.slice;
 
 	if ( $.event.fixHooks ) {
-		for ( var i = toFix.length; i; ) {
-			$.event.fixHooks[ toFix[ --i ] ] = $.event.mouseHooks;
-		}
+		$.event.fixHooks.wheel = $.event.mouseHooks;
 	}
 
 	var special = $.event.special.mousewheel = {
 		version: "@VERSION",
 
 		setup: function() {
-			if ( this.addEventListener ) {
-				for ( var i = toBind.length; i; ) {
-					this.addEventListener( toBind[ --i ], handler, false );
-				}
-			} else {
-				this.onmousewheel = handler;
-			}
+			this.addEventListener( "wheel", handler, false );
 
 			// Store the line height and page height for this particular element
 			$.data( this, "mousewheel-line-height", special.getLineHeight( this ) );
@@ -56,13 +44,7 @@
 		},
 
 		teardown: function() {
-			if ( this.removeEventListener ) {
-				for ( var i = toBind.length; i; ) {
-					this.removeEventListener( toBind[ --i ], handler, false );
-				}
-			} else {
-				this.onmousewheel = null;
-			}
+			this.removeEventListener( "wheel", handler, false );
 
 			// Clean up the data we added to the element
 			$.removeData( this, "mousewheel-line-height" );
@@ -71,12 +53,12 @@
 
 		getLineHeight: function( elem ) {
 			var $elem = $( elem ),
-				$parent = $elem[ "offsetParent" in $.fn ? "offsetParent" : "parent" ]();
+				$parent = $elem.offsetParent();
 			if ( !$parent.length ) {
 				$parent = $( "body" );
 			}
 			return parseInt( $parent.css( "fontSize" ), 10 ) ||
-                parseInt( $elem.css( "fontSize" ), 10 ) || 16;
+				parseInt( $elem.css( "fontSize" ), 10 ) || 16;
 		},
 
 		getPageHeight: function( elem ) {
@@ -84,64 +66,27 @@
 		},
 
 		settings: {
-			adjustOldDeltas: true, // see shouldAdjustOldDeltas() below
 			normalizeOffset: true  // calls getBoundingClientRect for each event
 		}
 	};
 
-	$.fn.extend( {
-		mousewheel: function( fn ) {
-			return fn ?
-				this[ modernEvents ? "on" : "bind" ]( "mousewheel", fn ) :
-				this.trigger( "mousewheel" );
-		},
+	function handler( origEvent ) {
+		var args = slice.call( arguments, 1 ),
+			delta = 0,
+			deltaX = 0,
+			deltaY = 0,
+			absDelta = 0,
+			event = $.event.fix( origEvent );
 
-		unmousewheel: function( fn ) {
-			return this[ modernEvents ? "off" : "unbind" ]( "mousewheel", fn );
-		}
-	} );
-
-
-	function handler( event ) {
-		var orgEvent   = event || window.event,
-			args       = slice.call( arguments, 1 ),
-			delta      = 0,
-			deltaX     = 0,
-			deltaY     = 0,
-			absDelta   = 0;
-		event = $.event.fix( orgEvent );
 		event.type = "mousewheel";
 
-		// Old school scrollwheel delta
-		if ( "detail" in orgEvent ) {
-			deltaY = orgEvent.detail * -1;
-		}
-		if ( "wheelDelta" in orgEvent ) {
-			deltaY = orgEvent.wheelDelta;
-		}
-		if ( "wheelDeltaY" in orgEvent ) {
-			deltaY = orgEvent.wheelDeltaY;
-		}
-		if ( "wheelDeltaX" in orgEvent ) {
-			deltaX = orgEvent.wheelDeltaX * -1;
-		}
-
-		// Firefox < 17 horizontal scrolling related to DOMMouseScroll event
-		if ( "axis" in orgEvent && orgEvent.axis === orgEvent.HORIZONTAL_AXIS ) {
-			deltaX = deltaY * -1;
-			deltaY = 0;
-		}
-
-		// Set delta to be deltaY or deltaX if deltaY is 0 for backwards compatability
-		delta = deltaY === 0 ? deltaX : deltaY;
-
 		// New school wheel delta (wheel event)
-		if ( "deltaY" in orgEvent ) {
-			deltaY = orgEvent.deltaY * -1;
+		if ( "deltaY" in origEvent ) {
+			deltaY = origEvent.deltaY * -1;
 			delta  = deltaY;
 		}
-		if ( "deltaX" in orgEvent ) {
-			deltaX = orgEvent.deltaX;
+		if ( "deltaX" in origEvent ) {
+			deltaX = origEvent.deltaX;
 			if ( deltaY === 0 ) {
 				delta  = deltaX * -1;
 			}
@@ -157,12 +102,12 @@
 		//   * deltaMode 0 is by pixels, nothing to do
 		//   * deltaMode 1 is by lines
 		//   * deltaMode 2 is by pages
-		if ( orgEvent.deltaMode === 1 ) {
+		if ( origEvent.deltaMode === 1 ) {
 			var lineHeight = $.data( this, "mousewheel-line-height" );
 			delta  *= lineHeight;
 			deltaY *= lineHeight;
 			deltaX *= lineHeight;
-		} else if ( orgEvent.deltaMode === 2 ) {
+		} else if ( origEvent.deltaMode === 2 ) {
 			var pageHeight = $.data( this, "mousewheel-page-height" );
 			delta  *= pageHeight;
 			deltaY *= pageHeight;
@@ -174,20 +119,6 @@
 
 		if ( !lowestDelta || absDelta < lowestDelta ) {
 			lowestDelta = absDelta;
-
-			// Adjust older deltas if necessary
-			if ( shouldAdjustOldDeltas( orgEvent, absDelta ) ) {
-				lowestDelta /= 40;
-			}
-		}
-
-		// Adjust older deltas if necessary
-		if ( shouldAdjustOldDeltas( orgEvent, absDelta ) ) {
-
-			// Divide all the things by 40!
-			delta  /= 40;
-			deltaX /= 40;
-			deltaY /= 40;
 		}
 
 		// Get a whole, normalized value for the deltas
@@ -219,27 +150,12 @@
 		// handle multiple device types that give different
 		// a different lowestDelta
 		// Ex: trackpad = 3 and mouse wheel = 120
-		if ( nullLowestDeltaTimeout ) {
-			window.clearTimeout( nullLowestDeltaTimeout );
-		}
+		window.clearTimeout( nullLowestDeltaTimeout );
 		nullLowestDeltaTimeout = window.setTimeout( function() {
 			lowestDelta = null;
 		}, 200 );
 
-		return ( $.event.dispatch || $.event.handle ).apply( this, args );
-	}
-
-	function shouldAdjustOldDeltas( orgEvent, absDelta ) {
-
-		// If this is an older event and the delta is divisible by 120,
-		// then we are assuming that the browser is treating this as an
-		// older mouse wheel event and that we should divide the deltas
-		// by 40 to try and get a more usable deltaFactor.
-		// Side note, this actually impacts the reported scroll distance
-		// in older browsers and can cause scrolling to be slower than native.
-		// Turn this off by setting $.event.special.mousewheel.settings.adjustOldDeltas to false.
-		return special.settings.adjustOldDeltas && orgEvent.type === "mousewheel" &&
-            absDelta % 120 === 0;
+		return $.event.dispatch.apply( this, args );
 	}
 
 } );

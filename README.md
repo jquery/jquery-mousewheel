@@ -4,9 +4,6 @@ A [jQuery](https://jquery.com/) plugin that adds cross-browser mouse wheel suppo
 
 In order to use the plugin, simply bind the `mousewheel` event to an element.
 
-It also provides two deprecated helper methods called `mousewheel` and `unmousewheel`
-that act just like other event helper methods in jQuery.
-
 The event object is updated with the normalized `deltaX` and `deltaY` properties.
 In addition, there is a new property on the event object called `deltaFactor`. Multiply
 the `deltaFactor` by `deltaX` or `deltaY` to get the scroll distance that the browser
@@ -15,13 +12,7 @@ has reported.
 Here is an example of using both the bind and helper method syntax:
 
 ```js
-// using on
 $( "#my_elem" ).on( "mousewheel", function( event ) {
-    console.log( event.deltaX, event.deltaY, event.deltaFactor );
-} );
-
-// using the event helper - not recommended!
-$( "#my_elem" ).mousewheel( function( event ) {
     console.log( event.deltaX, event.deltaY, event.deltaFactor );
 } );
 ```
