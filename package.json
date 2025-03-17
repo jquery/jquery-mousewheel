@@ -48,7 +48,7 @@
     "test": "npm run build && npm run lint && npm run test:browser"
   },
   "dependencies": {
-    "jquery": ">=1.7.2"
+    "jquery": ">=1.2.6"
   },
   "devDependencies": {
     "@swc/core": "^1.11.8",

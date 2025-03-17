@@ -61,6 +61,6 @@ jobs:
 
       - name: Run tests
         run: |
-          npm run test:unit -- -v -c jtr-isolate.yml \
+          npm run test:unit -- -v --retries 3 --hard-retries 1 \
             --browserstack "${{ matrix.BROWSER }}" \
             --run-id ${{ github.run_id }}

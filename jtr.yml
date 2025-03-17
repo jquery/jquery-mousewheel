@@ -1,0 +1,74 @@
+version: 1
+
+base-url: /test/
+
+runs:
+  jquery:
+    - git
+    - git.min
+    - git.slim
+    - git.slim.min
+    - 3.x-git
+    - 3.x-git.min
+    - 3.x-git.slim
+    - 3.x-git.slim.min
+    - 3.7.1
+    - 3.7.1.min
+    - 3.7.1.slim
+    - 3.7.1.slim.min
+    - 3.6.4
+    - 3.6.4.min
+    - 3.6.4.slim
+    - 3.6.4.slim.min
+    - 3.5.1
+    - 3.5.1.min
+    - 3.5.1.slim
+    - 3.5.1.slim.min
+    - 3.4.1
+    - 3.4.1.min
+    - 3.4.1.slim
+    - 3.4.1.slim.min
+    - 3.3.1
+    - 3.3.1.min
+    - 3.3.1.slim
+    - 3.3.1.slim.min
+    - 3.2.1
+    - 3.2.1.min
+    - 3.2.1.slim
+    - 3.2.1.slim.min
+    - 3.1.1
+    - 3.1.1.min
+    - 3.1.1.slim
+    - 3.1.1.slim.min
+    - 3.0.0
+    - 3.0.0.min
+    - 3.0.0.slim
+    - 3.0.0.slim.min
+    - 2.2.4
+    - 2.2.4.min
+    - 2.1.4
+    - 2.1.4.min
+    - 2.0.3
+    - 2.0.3.min
+    - 1.12.4
+    - 1.12.4.min
+    - 1.11.3
+    - 1.11.3.min
+    - 1.10.2
+    - 1.10.2.min
+    - 1.9.1
+    - 1.9.1.min
+    - 1.8.3
+    - 1.8.3.min
+    - 1.7.2
+    - 1.7.2.min
+    - 1.6.4
+    - 1.6.4.min
+    - 1.5.2
+    - 1.5.2.min
+    - 1.4.4
+    - 1.4.4.min
+    - 1.3.2
+    - 1.3.2.min
+    - 1.2.6
+    - 1.2.6.min

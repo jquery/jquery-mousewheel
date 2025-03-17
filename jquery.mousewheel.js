@@ -22,11 +22,12 @@
 } )( function( $ ) {
     "use strict";
 
-    var toFix  = [ "wheel", "mousewheel", "DOMMouseScroll", "MozMousePixelScroll" ],
+    var nullLowestDeltaTimeout, lowestDelta,
+        modernEvents = !!$.fn.on,
+        toFix  = [ "wheel", "mousewheel", "DOMMouseScroll", "MozMousePixelScroll" ],
         toBind = ( "onwheel" in window.document || window.document.documentMode >= 9 ) ?
             [ "wheel" ] : [ "mousewheel", "DomMouseScroll", "MozMousePixelScroll" ],
-        slice  = Array.prototype.slice,
-        nullLowestDeltaTimeout, lowestDelta;
+        slice  = Array.prototype.slice;
 
     if ( $.event.fixHooks ) {
         for ( var i = toFix.length; i; ) {
@@ -87,11 +88,13 @@
 
     $.fn.extend( {
         mousewheel: function( fn ) {
-            return fn ? this.on( "mousewheel", fn ) : this.trigger( "mousewheel" );
+            return fn ?
+                this[ modernEvents ? "on" : "bind" ]( "mousewheel", fn ) :
+                this.trigger( "mousewheel" );
         },
 
         unmousewheel: function( fn ) {
-            return this.off( "mousewheel", fn );
+            return this[ modernEvents ? "off" : "unbind" ]( "mousewheel", fn );
         }
     } );
 
@@ -126,7 +129,7 @@
             deltaY = 0;
         }
 
-        // Set delta to be deltaY or deltaX if deltaY is 0 for backwards compatabilitiy
+        // Set delta to be deltaY or deltaX if deltaY is 0 for backwards compatability
         delta = deltaY === 0 ? deltaX : deltaY;
 
         // New school wheel delta (wheel event)
@@ -209,25 +212,23 @@
         // Add event and delta to the front of the arguments
         args.unshift( event, delta, deltaX, deltaY );
 
-        // Clearout lowestDelta after sometime to better
+        // Clear out lowestDelta after sometime to better
         // handle multiple device types that give different
         // a different lowestDelta
         // Ex: trackpad = 3 and mouse wheel = 120
         if ( nullLowestDeltaTimeout ) {
             window.clearTimeout( nullLowestDeltaTimeout );
         }
-        nullLowestDeltaTimeout = window.setTimeout( nullLowestDelta, 200 );
+        nullLowestDeltaTimeout = window.setTimeout( function() {
+            lowestDelta = null;
+        }, 200 );
 
         return ( $.event.dispatch || $.event.handle ).apply( this, args );
     }
 
-    function nullLowestDelta() {
-        lowestDelta = null;
-    }
-
     function shouldAdjustOldDeltas( orgEvent, absDelta ) {
 
-        // If this is an older event and the delta is divisable by 120,
+        // If this is an older event and the delta is divisible by 120,
         // then we are assuming that the browser is treating this as an
         // older mouse wheel event and that we should divide the deltas
         // by 40 to try and get a more usable deltaFactor.
