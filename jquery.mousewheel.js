@@ -1,5 +1,5 @@
 /*!
- * jQuery Mousewheel 3.2.1
+ * jQuery Mousewheel 3.2.2
  * Copyright OpenJS Foundation and other contributors
  */
 
@@ -36,7 +36,7 @@
     }
 
     var special = $.event.special.mousewheel = {
-        version: "3.2.1",
+        version: "3.2.2",
 
         setup: function() {
             if ( this.addEventListener ) {

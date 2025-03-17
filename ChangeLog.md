@@ -1,5 +1,9 @@
 # Mouse Wheel ChangeLog
 
+## 3.2.2
+
+* Include the minified file in the npm package
+
 ## 3.2.1
 
 * Update README
