@@ -28,6 +28,7 @@
   "files": [
     "ChangeLog.md",
     "jquery.mousewheel.js",
+    "jquery.mousewheel.min.js",
     "README.md",
     "LICENSE.txt"
   ],
