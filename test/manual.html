@@ -142,18 +142,18 @@
                 };
 
                 $( document )
-                  .mousewheel( function( event, delta ) {
+                  .on( "mousewheel", function( event, delta ) {
                       loghandle( event, delta );
                   } );
 
                 $( "#test1" )
-                  .mousewheel( function( event, delta ) {
+                  .on( "mousewheel", function( event, delta ) {
                       loghandle( event, delta );
                       log( "pageX: " + event.pageX + " pageY: " + event.pageY );
                   } );
 
                 $( "#test2" )
-                  .mousewheel( function( event, delta ) {
+                  .on( "mousewheel", function( event, delta ) {
                       loghandle( event, delta );
                       return false; // prevent default
                   } );
@@ -167,43 +167,43 @@
                         log( "#test3: mouseout" );
                     }
                   )
-                  .mousewheel( function() {
+                  .on( "mousewheel", function() {
                       log( "#test3: I should not have been logged" );
                   } )
-                  .unmousewheel();
+                  .off( "mousewheel" );
 
                 var testRemoval = function() {
                     log( "#test4: I should not have been logged" );
                 };
 
                 $( "#test4" )
-                  .mousewheel( function( event, delta ) {
+                  .on( "mousewheel", function( event, delta ) {
                       loghandle( event, delta );
                       return false;
                   } )
-                  .mousewheel( testRemoval )
-                  .mousewheel( function( event, delta ) {
+                  .on( "mousewheel", testRemoval )
+                  .on( "mousewheel", function( event, delta ) {
                       loghandle( event, delta );
                       return false;
                   } )
-                  .unmousewheel( testRemoval );
+                  .off( "mousewheel", testRemoval );
 
                 $( "#test5" )
-                  .mousewheel( function( event, delta ) {
+                  .on( "mousewheel", function( event, delta ) {
                       loghandle( event, delta );
                       event.stopPropagation();
                       event.preventDefault();
                   } );
 
                 $( "#test6" )
-                  .mousewheel( function( event, delta ) {
+                  .on( "mousewheel", function( event, delta ) {
                       loghandle( event, delta );
                       event.stopPropagation();
                       event.preventDefault();
                   } );
 
                 $( "#test7" )
-                  .mousewheel( function( event, delta ) {
+                  .on( "mousewheel", function( event, delta ) {
                       loghandle( event, delta );
                       event.preventDefault();
                   } );
@@ -222,7 +222,7 @@
         <ul>
             <li><strong>Test1</strong> is just using the plain on <code>mousewheel()</code> with a function passed in and does not prevent default. (Also logs the value of <code>pageX</code> and <code>pageY</code> event properties.)</li>
             <li><strong>Test2</strong> should prevent the default action.</li>
-            <li><strong>Test3</strong> should only log a <code>mouseover</code> and <code>mouseout</code> event. Testing <code>unmousewheel()</code>.</li>
+            <li><strong>Test3</strong> should only log a <code>mouseover</code> and <code>mouseout</code> event. Testing <code>.off( "mousewheel" )</code>.</li>
             <li><strong>Test4</strong> has two handlers.</li>
             <li><strong>Test5</strong> is like Test2 but has children. The children should not scroll until mousing over them.</li>
             <li><strong>Test6</strong> is like Test5 but should not scroll children or parents.</li>
