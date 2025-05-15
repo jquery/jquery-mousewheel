@@ -61,7 +61,7 @@
     "jquery-test-runner": "0.2.6",
     "qunit": "2.24.1",
     "requirejs": "2.3.7",
-    "release-it": "18.1.2",
+    "release-it": "19.0.2",
     "rimraf": "^6.0.1"
   }
 }
