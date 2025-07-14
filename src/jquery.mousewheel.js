@@ -58,7 +58,7 @@
         },
 
         teardown: function() {
-            // Remove with same passive option as setup
+            // Use passive event listeners if supported
             var passiveSupported = false;
             try {
                 var opts = Object.defineProperty({}, "passive", {
