@@ -6,7 +6,6 @@
  * Released under the MIT license
  * https://jquery.org/license
  */
-
 ( function( factory ) {
 	"use strict";
 
@@ -37,7 +36,21 @@
 		version: "@VERSION",
 
 		setup: function() {
-			this.addEventListener( "wheel", handler, false );
+			// Use passive event listeners if supported
+			var passiveSupported = false;
+			try {
+				var opts = Object.defineProperty({}, "passive", {
+					get: function() {
+						passiveSupported = true;
+					}
+				});
+				window.addEventListener("test", null, opts);
+			} catch (e) {}
+			this.addEventListener(
+				"wheel",
+				handler,
+				passiveSupported ? { passive: true } : false
+			);
 
 			// Store the line height and page height for this particular element
 			$.data( this, "mousewheel-line-height", special.getLineHeight( this ) );
@@ -45,7 +58,21 @@
 		},
 
 		teardown: function() {
-			this.removeEventListener( "wheel", handler, false );
+			// Use passive event listeners if supported
+			var passiveSupported = false;
+			try {
+				var opts = Object.defineProperty({}, "passive", {
+					get: function() {
+						passiveSupported = true;
+					}
+				});
+				window.addEventListener("test", null, opts);
+			} catch (e) {}
+			this.removeEventListener(
+				"wheel",
+				handler,
+				passiveSupported ? { passive: true } : false
+			);
 
 			// Clean up the data we added to the element
 			$.removeData( this, "mousewheel-line-height" );
@@ -90,7 +117,7 @@
 			deltaX = origEvent.deltaX;
 			if ( deltaY === 0 ) {
 				delta  = deltaX * -1;
-		}
+			}
 		}
 
 		// No change actually happened, no reason to go any further
