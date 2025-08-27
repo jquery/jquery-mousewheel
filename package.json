@@ -26,7 +26,7 @@
     "browser"
   ],
   "files": [
-    "CHANGELOG.md",
+    "changelog.md",
     "dist/jquery.mousewheel.js",
     "dist/jquery.mousewheel.min.js",
     "README.md",
