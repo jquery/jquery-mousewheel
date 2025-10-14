@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-read -p "Press enter if you updated CHANGELOG.md; abort otherwise"
-
 # Install dependencies
 npm ci
 
