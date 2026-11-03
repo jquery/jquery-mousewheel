@@ -70,3 +70,23 @@ QUnit.test( "mouse event properties are passed through", function( assert ) {
 
 	markup.remove();
 } );
+
+QUnit.test( "page deltas on an element inside a container hidden when bound", function( assert ) {
+	assert.expect( 2 );
+
+	var container = jQuery( "<div></div>" ).hide().appendTo( "body" ),
+		markup = jQuery( "<p>wheelme</p>" ).appendTo( container );
+
+	markup.on( "mousewheel", function( e ) {
+		assert.ok( e.deltaY < 0, "deltaY is a negative number: " + e.deltaY );
+		assert.ok( e.deltaFactor > 0, "deltaFactor is a positive number: " + e.deltaFactor );
+	} );
+
+	container.show();
+
+	var event1 = makeWheelEvent( 0, 1 );
+	event1.deltaMode = 2;
+	markup[ 0 ].dispatchEvent( event1 );
+
+	container.remove();
+} );
