@@ -108,7 +108,11 @@
 			deltaY *= lineHeight;
 			deltaX *= lineHeight;
 		} else if ( origEvent.deltaMode === 2 ) {
-			var pageHeight = $.data( this, "mousewheel-page-height" );
+
+			// The stored height is 0 if the element was in a hidden container
+			// or detached when the handler was bound, so measure it again
+			var pageHeight = $.data( this, "mousewheel-page-height" ) ||
+				special.getPageHeight( this );
 			delta  *= pageHeight;
 			deltaY *= pageHeight;
 			deltaX *= pageHeight;
